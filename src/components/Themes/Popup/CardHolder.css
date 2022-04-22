@@ -1,0 +1,32 @@
+.themes {
+  padding: 30px;
+}
+.themes div div.col-sm-6 {
+  padding-bottom: 30px !important;
+}
+.card-body button {
+  padding: 12px 30px;
+  font-family: "Montserrat";
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  transition: 0.2s all !important;
+}
+.card-body button:nth-of-type(1) {
+  border: 1px solid #1030b7;
+  background: #1030b7;
+  color: #fff;
+  margin-right: 15px;
+}
+.card-body button:nth-of-type(2) {
+  background-color: #60738f;
+  color: #fff;
+  border: 1px solid #60738f;
+}
+.card-body button:nth-of-type(1):hover,
+.card-body button:nth-of-type(2):hover {
+  opacity: 0.9;
+  color: #fff;
+}

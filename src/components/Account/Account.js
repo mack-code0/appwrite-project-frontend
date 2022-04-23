@@ -9,6 +9,8 @@ const Account = ({ openThemeOptions }) => {
                         href="#list-home" role="tab" aria-controls="home">Account</a>
                     <a className="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
                         href="#list-profile" role="tab" aria-controls="profile">Default Theme</a>
+                    <a className="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                        href="#list-history" role="tab" aria-controls="history">History</a>
                 </div>
             </div>
             <div className="col-8">
@@ -17,6 +19,7 @@ const Account = ({ openThemeOptions }) => {
                     <div className="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
                         <DefaultCard changeTheme={openThemeOptions} />
                     </div>
+                    <div className="tab-pane fade" id="list-history" role="tabpanel" aria-labelledby="list-home-list">Home</div>
                 </div>
             </div>
         </div>

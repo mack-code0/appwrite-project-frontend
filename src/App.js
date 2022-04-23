@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle.min"
 import Receipt from './components/Receipt/Receipt'
-import html2canvas from 'html2canvas'
-import { Appwrite } from 'appwrite'
+// import html2canvas from 'html2canvas'
+// import { Appwrite } from 'appwrite'
 import FormHolder from './components/ReceiptForm/FormHolder'
 import Popup from "./components/ReceiptForm/PopUp/EditPopUp"
 import CardPopup from "./components/Themes/Popup/CardPopup"
@@ -68,7 +68,7 @@ function App() {
   }
 
   const viewReceiptHandler = () => {
-    if(productList.length <= 0){
+    if (productList.length <= 0) {
       return alert("Add Product")
     }
     openLoaderHandler()
@@ -76,7 +76,12 @@ function App() {
     setViewReceipt(true)
   }
 
-  const openLoaderHandler = ()=>{
+  const homepageHandler = () => {
+    openLoaderHandler()
+    setViewReceipt(false)
+  }
+
+  const openLoaderHandler = () => {
     setOpenLoader(true)
 
     setTimeout(() => {
@@ -87,7 +92,7 @@ function App() {
   return (
     <main className="w-50 mx-auto">
       <Loader loaderHandler={openLoader} />
-      <Logo openAccount={openAccountHandler} isAccountOpen={openAccount} />
+      <Logo openAccount={openAccountHandler} homepage={homepageHandler} viewReceipt={viewReceipt} isAccountOpen={openAccount} />
       {
         openAccount ?
           <Account openThemeOptions={themeSelector} /> :

@@ -1,0 +1,11 @@
+.save-and-share{
+    background: #1030b7;
+}
+.save{
+    background: #60738f;
+}
+.save-and-share,
+.save{
+    color:#fff;
+    border: none;
+}

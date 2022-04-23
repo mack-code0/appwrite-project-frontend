@@ -1,10 +1,10 @@
 import Card from "./Card"
 import "./CardHolder.css"
-const CardHolder = () => {
+const CardHolder = ({ viewReceipt }) => {
     return (
         <section className="themes">
             <div className="row">
-                <Card />
+                <Card viewReceipt={viewReceipt} />
                 <Card />
                 <Card />
                 <Card />

@@ -20,6 +20,7 @@ function App() {
   const [openThemeSelector, setOpenThemeSelector] = useState(false)
   const [openAccount, setOpenAccount] = useState(false)
   const [openLoader, setOpenLoader] = useState(false)
+  const [viewReceipt, setViewReceipt] = useState(false)
 
 
   const addProduct = (product) => {
@@ -51,19 +52,36 @@ function App() {
   }
 
   const themeSelector = () => {
+    openLoaderHandler()
     setOpenThemeSelector(!openThemeSelector)
   }
 
-  const openAccountHandler = ()=>{
+  const openAccountHandler = () => {
+    openLoaderHandler()
+    setOpenAccount(!openAccount)
+  }
+
+  const reset = () => {
+    if (productList.length > 0 && window.confirm("Are you sure you want to cancel?") === true) {
+      setProductList([])
+    }
+  }
+
+  const viewReceiptHandler = () => {
+    if(productList.length <= 0){
+      return alert("Add Product")
+    }
+    openLoaderHandler()
+    setOpenThemeSelector(false)
+    setViewReceipt(true)
+  }
+
+  const openLoaderHandler = ()=>{
     setOpenLoader(true)
 
-    const interval = setInterval(()=>{
+    setTimeout(() => {
       setOpenLoader(false)
     }, 1000)
-
-    setOpenAccount(!openAccount)
-    
-    clearInterval(interval)
   }
 
   return (
@@ -71,11 +89,15 @@ function App() {
       <Loader loaderHandler={openLoader} />
       <Logo openAccount={openAccountHandler} isAccountOpen={openAccount} />
       {
-        openAccount ? <Account /> :
+        openAccount ?
+          <Account openThemeOptions={themeSelector} /> :
           <>
-            <FormHolder addToList={addProduct} themeSelectorHandler={themeSelector} products={productList} editHandler={editProduct} deleteHandler={deleteProduct} />
-            {openThemeSelector && <CardPopup handleClose={() => setOpenThemeSelector(false)} />}
+            {viewReceipt ?
+              <Receipt products={productList} /> :
+              <FormHolder resetHandler={reset} addToList={addProduct} themeSelectorHandler={themeSelector} products={productList} editHandler={editProduct} deleteHandler={deleteProduct} />
+            }
             {isOpen && <Popup editProductHandler={submitEditedProduct} contentHandler={productToEdit} handleClose={() => setIsOpen(false)} />}
+            {openThemeSelector && <CardPopup viewReceipt={viewReceiptHandler} handleClose={() => setOpenThemeSelector(false)} />}
             {/* <button onClick={handleDownloadImage}>Download Receipt</button>
             <Receipt products={productList} totalPrice={totalPrice} /> */}
           </>

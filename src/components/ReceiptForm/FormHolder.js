@@ -2,10 +2,10 @@ import "./FormHolder.css"
 import Form from './Form'
 import Product from "./Product"
 
-const FormHolder = ({ products, addToList, deleteHandler, editHandler, themeSelectorHandler }) => {
+const FormHolder = ({ products, addToList, deleteHandler, editHandler, themeSelectorHandler, resetHandler }) => {
     return (
         <>
-            <Form addToListHandler={addToList} themeSelector={themeSelectorHandler} />
+            <Form reset={resetHandler} addToListHandler={addToList} themeSelector={themeSelectorHandler} />
             <section className="added-product">
                 {products && products.map(product => <Product key={product.id} product={product} editProduct={editHandler} deleteProduct={deleteHandler} />)}
             </section>

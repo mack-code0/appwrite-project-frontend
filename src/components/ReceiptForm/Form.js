@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-const Form = ({ addToListHandler, themeSelector }) => {
+const Form = ({ addToListHandler, themeSelector, reset }) => {
     const [name, setName] = useState("")
     const [price, setPrice] = useState("")
     const [quantity, setQuantity] = useState("")
@@ -52,7 +52,7 @@ const Form = ({ addToListHandler, themeSelector }) => {
 
             </form>
             <div className="multiple-button d-flex w-100">
-                <button onClick={() => ""}>Cancel</button>
+                <button onClick={reset}>Cancel</button>
                 <button onClick={themeSelector}>Select Theme</button>
             </div>
         </section>

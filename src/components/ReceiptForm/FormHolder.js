@@ -1,4 +1,3 @@
-import "./FormHolder.css"
 import Form from './Form'
 import Product from "./Product"
 

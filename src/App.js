@@ -1,15 +1,17 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle.min"
 import Receipt from './components/Receipt/Receipt'
+import "./components/ReceiptForm/FormHolder.css"
 // import html2canvas from 'html2canvas'
-// import { Appwrite } from 'appwrite'
+import { Appwrite } from 'appwrite'
 import FormHolder from './components/ReceiptForm/FormHolder'
 import Popup from "./components/ReceiptForm/PopUp/EditPopUp"
 import CardPopup from "./components/Themes/Popup/CardPopup"
 import Account from "./components/Account/Account"
 import Logo from "./components/ReceiptForm/Logo"
 import Loader from "./components/Loader/Loader"
+import Signup from "./components/auth/Signup"
 
 
 function App() {
@@ -21,6 +23,25 @@ function App() {
   const [openAccount, setOpenAccount] = useState(false)
   const [openLoader, setOpenLoader] = useState(false)
   const [viewReceipt, setViewReceipt] = useState(false)
+
+  // useEffect(() => {
+  //   const sdk = new Appwrite();
+
+  //   sdk
+  //   .setEndpoint('http://localhost:50/v1') // Your API Endpoint
+  //   .setProject('625ac97006dc2d58b12c')
+
+  //   let promise = sdk.account.createSession('macdon202@gmail.com', 'Oluobadare202'); 
+  //   let promise1 = sdk.account.createJWT();
+
+  //   promise.then(function (response) {
+  //     promise1.then(ressp=>{
+  //       console.log(ressp);
+  //     })
+  //   }, function (error) {
+  //     console.log(error); // Failure
+  //   });
+  // })
 
 
   const addProduct = (product) => {
@@ -93,6 +114,7 @@ function App() {
     <main className="w-50 mx-auto">
       <Loader loaderHandler={openLoader} />
       <Logo openAccount={openAccountHandler} homepage={homepageHandler} viewReceipt={viewReceipt} isAccountOpen={openAccount} />
+      <Signup />
       {
         openAccount ?
           <Account openThemeOptions={themeSelector} /> :
@@ -103,8 +125,6 @@ function App() {
             }
             {isOpen && <Popup editProductHandler={submitEditedProduct} contentHandler={productToEdit} handleClose={() => setIsOpen(false)} />}
             {openThemeSelector && <CardPopup viewReceipt={viewReceiptHandler} handleClose={() => setOpenThemeSelector(false)} />}
-            {/* <button onClick={handleDownloadImage}>Download Receipt</button>
-            <Receipt products={productList} totalPrice={totalPrice} /> */}
           </>
       }
     </main>

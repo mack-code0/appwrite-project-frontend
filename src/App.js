@@ -13,6 +13,7 @@ import Logo from "./components/ReceiptForm/Logo"
 import Loader from "./components/Loader/Loader"
 import Signup from "./components/auth/Signup"
 import { isLoggedIn } from "./util/authentication"
+import Login from "./components/auth/Login"
 
 
 function App() {
@@ -24,31 +25,13 @@ function App() {
   const [openAccount, setOpenAccount] = useState(false)
   const [openLoader, setOpenLoader] = useState(false)
   const [viewReceipt, setViewReceipt] = useState(false)
+  const [openLoginPage, setOpenLoginPage] = useState(false)
   const [isAuth, setIsAuth] = useState(false)
 
 
   useEffect(() => {
     setIsAuth(isLoggedIn())
   }, [])
-  // useEffect(() => {
-  //   const sdk = new Appwrite();
-
-  //   sdk
-  //   .setEndpoint('http://localhost:50/v1') // Your API Endpoint
-  //   .setProject('625ac97006dc2d58b12c')
-
-  //   let promise = sdk.account.createSession('macdon202@gmail.com', 'Oluobadare202'); 
-  //   let promise1 = sdk.account.createJWT();
-
-  //   promise.then(function (response) {
-  //     promise1.then(ressp=>{
-  //       console.log(ressp);
-  //     })
-  //   }, function (error) {
-  //     console.log(error); // Failure
-  //   });
-  // })
-
 
   const addProduct = (product) => {
     setTotalPrice((prev) => {
@@ -119,7 +102,16 @@ function App() {
   return (
     <main className="w-50 mx-auto">
       <Loader loaderHandler={openLoader} />
-      <Logo openAccount={openAccountHandler} homepage={homepageHandler} viewReceipt={viewReceipt} isAccountOpen={openAccount} />
+      <Logo
+        authMode={isAuth}
+        openLoginPage={openLoginPage}
+        openSignupPageHandler={() => setOpenLoginPage(false)}
+        openLoginPageHandler={() => setOpenLoginPage(true)}
+        openAccount={openAccountHandler}
+        homepage={homepageHandler}
+        viewReceipt={viewReceipt}
+        isAccountOpen={openAccount}
+      />
       {
         isAuth ?
           openAccount ?
@@ -133,7 +125,10 @@ function App() {
               {openThemeSelector && <CardPopup viewReceipt={viewReceiptHandler} handleClose={() => setOpenThemeSelector(false)} />}
             </>
           :
-          <Signup />
+          openLoginPage ?
+            <Login openSignupPage={() => setOpenLoginPage(false)} />
+            :
+            <Signup openLoginPageHandler={() => setOpenLoginPage(true)} />
       }
     </main>
   )

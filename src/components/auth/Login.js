@@ -20,17 +20,14 @@ const Login = () => {
             return alert("Invalid Inputs")
         }
 
-        fetch("http://localhost:7000/login", {
-            method: "Post",
-            body: JSON.stringify({ email, password })
-        }).then(res => res.json())
-            .then(response => {
-                console.log(response)
-                setEmail("")
-                setPassword("")
-            }).catch(err => {
-                console.log(err);
-            })
+        
+        let promise = appwritesdk.account.createSession('email@example.com', 'password');
+
+        promise.then(function (response) {
+            console.log(response); // Success
+        }, function (error) {
+            console.log(error); // Failure
+        });
     }
 
     return (

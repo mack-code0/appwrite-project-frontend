@@ -1,7 +1,6 @@
 import { useState } from "react"
-import appwritesdk from "../../util/appwritesdk"
 
-const Signup = () => {
+const Signup = ({ openLoginPageHandler }) => {
     const [email, setEmail] = useState("")
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
@@ -25,19 +24,23 @@ const Signup = () => {
             return alert("Invalid Inputs")
         }
 
-        const newUser = appwritesdk.create("unique()", email, password, name)
-        newUser.then(function (response) {
-            console.log(response);
-        }, function (error) {
-            if (error.code === 409) {
-                return alert("Account already exists")
+        fetch("http://localhost:7000/signup", {
+            method: "POST",
+            body: JSON.stringify({ name, email, password }),
+            headers: {
+                "Content-Type": "application/json"
             }
-            alert("An error occured")
-        })
+        }).then(res => res.json())
+            .then(response => {
+                console.log(response);
+                setName("")
+                setEmail("")
+                setPassword("")
 
-        setName("")
-        setEmail("")
-        setPassword("")
+                openLoginPageHandler()
+            }).catch(err => {
+                console.log(err);
+            })
     }
 
     return (

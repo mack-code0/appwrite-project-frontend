@@ -1,50 +1,53 @@
-import { useState, useEffect } from "react"
-// import {} from "react-err"
+import { useState } from "react"
+import appwritesdk from "../../util/appwritesdk"
 
-const Signup = ({ addToListHandler, themeSelector, reset }) => {
+const Signup = () => {
+    const [email, setEmail] = useState("")
     const [name, setName] = useState("")
-    const [price, setPrice] = useState("")
-    const [quantity, setQuantity] = useState("")
+    const [password, setPassword] = useState("")
+
+    const emailHandler = (e) => {
+        setEmail(e.target.value)
+    }
 
     const nameHandler = (e) => {
         setName(e.target.value)
     }
 
-    const priceHandler = (e) => {
-        setPrice(e.target.value)
+    const passwordHandler = (e) => {
+        setPassword(e.target.value)
     }
 
-    const quantityHandler = (e) => {
-        setQuantity(e.target.value)
-    }
-    const submitProduct = e => {
+    const signup = e => {
         e.preventDefault()
 
-        if (!name || !price || !quantity) {
+        if (!email || !password || !name) {
             return alert("Invalid Inputs")
         }
 
-        addToListHandler({
-            name,
-            price,
-            quantity
+        const newUser = appwritesdk.create("unique()", email, password, name)
+        newUser.then(function (response) {
+            console.log(response);
+        }, function (error) {
+            if (error.code === 409) {
+                return alert("Account already exists")
+            }
+            alert("An error occured")
         })
 
         setName("")
-        setPrice("")
-        setQuantity("")
+        setEmail("")
+        setPassword("")
     }
 
     return (
         <section className="form">
-            <form onSubmit={submitProduct} className="w-100 d-flex flex-column align-items-center">
+            <form onSubmit={signup} className="w-100 d-flex flex-column align-items-center">
 
-                <input type="text" value={name} onChange={nameHandler} placeholder="Email" />
 
-                <div className="multiple-input d-flex w-100">
-                    <input value={price} onChange={priceHandler} type="number" placeholder="Price" />
-                    <input value={quantity} onChange={quantityHandler} type="number" placeholder="Quantity" />
-                </div>
+                <input type="email" value={email} onChange={emailHandler} placeholder="Email" />
+                <input type="text" value={name} onChange={nameHandler} placeholder="Full Name" />
+                <input type="password" value={password} onChange={passwordHandler} placeholder="Password" />
 
                 <button type="submit">
                     Sign Up

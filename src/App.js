@@ -12,6 +12,7 @@ import Account from "./components/Account/Account"
 import Logo from "./components/ReceiptForm/Logo"
 import Loader from "./components/Loader/Loader"
 import Signup from "./components/auth/Signup"
+import { isLoggedIn } from "./util/authentication"
 
 
 function App() {
@@ -23,7 +24,12 @@ function App() {
   const [openAccount, setOpenAccount] = useState(false)
   const [openLoader, setOpenLoader] = useState(false)
   const [viewReceipt, setViewReceipt] = useState(false)
+  const [isAuth, setIsAuth] = useState(false)
 
+
+  useEffect(() => {
+    setIsAuth(isLoggedIn())
+  }, [])
   // useEffect(() => {
   //   const sdk = new Appwrite();
 
@@ -114,18 +120,20 @@ function App() {
     <main className="w-50 mx-auto">
       <Loader loaderHandler={openLoader} />
       <Logo openAccount={openAccountHandler} homepage={homepageHandler} viewReceipt={viewReceipt} isAccountOpen={openAccount} />
-      <Signup />
       {
-        openAccount ?
-          <Account openThemeOptions={themeSelector} /> :
-          <>
-            {viewReceipt ?
-              <Receipt products={productList} /> :
-              <FormHolder resetHandler={reset} addToList={addProduct} themeSelectorHandler={themeSelector} products={productList} editHandler={editProduct} deleteHandler={deleteProduct} />
-            }
-            {isOpen && <Popup editProductHandler={submitEditedProduct} contentHandler={productToEdit} handleClose={() => setIsOpen(false)} />}
-            {openThemeSelector && <CardPopup viewReceipt={viewReceiptHandler} handleClose={() => setOpenThemeSelector(false)} />}
-          </>
+        isAuth ?
+          openAccount ?
+            <Account openThemeOptions={themeSelector} /> :
+            <>
+              {viewReceipt ?
+                <Receipt products={productList} /> :
+                <FormHolder resetHandler={reset} addToList={addProduct} themeSelectorHandler={themeSelector} products={productList} editHandler={editProduct} deleteHandler={deleteProduct} />
+              }
+              {isOpen && <Popup editProductHandler={submitEditedProduct} contentHandler={productToEdit} handleClose={() => setIsOpen(false)} />}
+              {openThemeSelector && <CardPopup viewReceipt={viewReceiptHandler} handleClose={() => setOpenThemeSelector(false)} />}
+            </>
+          :
+          <Signup />
       }
     </main>
   )

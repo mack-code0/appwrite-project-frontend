@@ -1,64 +1,53 @@
+import { useState } from "react"
+import appwritesdk from "../../util/appwritesdk"
 
-import { useState, useEffect } from "react"
+const Login = () => {
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
 
-const Form = ({ addToListHandler, themeSelector, reset }) => {
-    const [name, setName] = useState("")
-    const [price, setPrice] = useState("")
-    const [quantity, setQuantity] = useState("")
-
-    const nameHandler = (e) => {
-        setName(e.target.value)
+    const emailHandler = (e) => {
+        setEmail(e.target.value)
     }
 
-    const priceHandler = (e) => {
-        setPrice(e.target.value)
+    const passwordHandler = (e) => {
+        setPassword(e.target.value)
     }
 
-    const quantityHandler = (e) => {
-        setQuantity(e.target.value)
-    }
-    const submitProduct = e => {
+    const login = e => {
         e.preventDefault()
 
-        if (!name || !price || !quantity) {
+        if (!email || !password) {
             return alert("Invalid Inputs")
         }
 
-        addToListHandler({
-            name,
-            price,
-            quantity
-        })
-
-        setName("")
-        setPrice("")
-        setQuantity("")
+        fetch("http://localhost:7000/login", {
+            method: "Post",
+            body: JSON.stringify({ email, password })
+        }).then(res => res.json())
+            .then(response => {
+                console.log(response)
+                setEmail("")
+                setPassword("")
+            }).catch(err => {
+                console.log(err);
+            })
     }
 
     return (
         <section className="form">
-            <form onSubmit={submitProduct} className="w-100 d-flex flex-column align-items-center">
+            <form onSubmit={login} className="w-100 d-flex flex-column align-items-center">
 
-                <input type="text" value={name} onChange={nameHandler} placeholder="Product name" />
 
-                <div className="multiple-input d-flex w-100">
-                    <input value={price} onChange={priceHandler} type="number" placeholder="Price" />
-                    <input value={quantity} onChange={quantityHandler} type="number" placeholder="Quantity" />
-                </div>
+                <input type="email" value={email} onChange={emailHandler} placeholder="Email" />
+                <input type="password" value={password} onChange={passwordHandler} placeholder="Password" />
 
                 <button type="submit">
-                    Add
+                    Login
                 </button>
-
-
             </form>
-            <div className="multiple-button d-flex w-100">
-                <button onClick={reset}>Cancel</button>
-                <button onClick={themeSelector}>Select Theme</button>
-            </div>
         </section>
     )
 }
 
 
-export default Form
+export default Login

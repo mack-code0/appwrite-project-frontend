@@ -4,7 +4,7 @@ const sdk = new Appwrite();
 
 sdk
     .setEndpoint('http://localhost:50/v1') // Your API Endpoint
-    .setProject('6256fbc40d114472489f') // Your project ID
+    .setProject('625ac97006dc2d58b12c') // Your project ID
 ;
 
 export default sdk.account

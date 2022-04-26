@@ -4,7 +4,6 @@ import "bootstrap/dist/js/bootstrap.bundle.min"
 import Receipt from './components/Receipt/Receipt'
 import "./components/ReceiptForm/FormHolder.css"
 // import html2canvas from 'html2canvas'
-import { Appwrite } from 'appwrite'
 import FormHolder from './components/ReceiptForm/FormHolder'
 import Popup from "./components/ReceiptForm/PopUp/EditPopUp"
 import CardPopup from "./components/Themes/Popup/CardPopup"
@@ -26,12 +25,13 @@ function App() {
   const [openLoader, setOpenLoader] = useState(false)
   const [viewReceipt, setViewReceipt] = useState(false)
   const [openLoginPage, setOpenLoginPage] = useState(false)
-  const [isAuth, setIsAuth] = useState(false)
+  const [isAuth, setIsAuth] = useState(isLoggedIn())
 
 
   useEffect(() => {
+    openLoaderHandler()
     setIsAuth(isLoggedIn())
-  }, [])
+  }, [isAuth])
 
   const addProduct = (product) => {
     setTotalPrice((prev) => {
@@ -103,7 +103,8 @@ function App() {
     <main className="w-50 mx-auto">
       <Loader loaderHandler={openLoader} />
       <Logo
-        authMode={isAuth}
+        authenticated={isAuth}
+        logoutHandler={setIsAuth}
         openLoginPage={openLoginPage}
         openSignupPageHandler={() => setOpenLoginPage(false)}
         openLoginPageHandler={() => setOpenLoginPage(true)}
@@ -126,7 +127,7 @@ function App() {
             </>
           :
           openLoginPage ?
-            <Login openSignupPage={() => setOpenLoginPage(false)} />
+            <Login authModeHandler={setIsAuth} openSignupPage={() => setOpenLoginPage(false)} />
             :
             <Signup openLoginPageHandler={() => setOpenLoginPage(true)} />
       }

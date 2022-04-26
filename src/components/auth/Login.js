@@ -1,7 +1,8 @@
 import { useState } from "react"
 import appwritesdk from "../../util/appwritesdk"
+import { login } from "../../util/authentication"
 
-const Login = () => {
+const Login = ({ authModeHandler }) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
@@ -13,26 +14,21 @@ const Login = () => {
         setPassword(e.target.value)
     }
 
-    const login = e => {
+    const submitLogin = e => {
         e.preventDefault()
 
         if (!email || !password) {
             return alert("Invalid Inputs")
         }
 
-        
-        let promise = appwritesdk.account.createSession('email@example.com', 'password');
-
-        promise.then(function (response) {
-            console.log(response); // Success
-        }, function (error) {
-            console.log(error); // Failure
-        });
+        login(email, password).then(bool => {
+            authModeHandler(bool)
+        })
     }
 
     return (
         <section className="form">
-            <form onSubmit={login} className="w-100 d-flex flex-column align-items-center">
+            <form onSubmit={submitLogin} className="w-100 d-flex flex-column align-items-center">
 
 
                 <input type="email" value={email} onChange={emailHandler} placeholder="Email" />

@@ -30,7 +30,7 @@ function App() {
 
   useEffect(() => {
     openLoaderHandler()
-    setIsAuth(isLoggedIn())
+    console.log(isAuth);
   }, [isAuth])
 
   const addProduct = (product) => {
@@ -115,7 +115,7 @@ function App() {
       />
       {
         isAuth ?
-          openAccount ?
+          (openAccount ?
             <Account openThemeOptions={themeSelector} /> :
             <>
               {viewReceipt ?
@@ -124,12 +124,12 @@ function App() {
               }
               {isOpen && <Popup editProductHandler={submitEditedProduct} contentHandler={productToEdit} handleClose={() => setIsOpen(false)} />}
               {openThemeSelector && <CardPopup viewReceipt={viewReceiptHandler} handleClose={() => setOpenThemeSelector(false)} />}
-            </>
+            </>)
           :
-          openLoginPage ?
+          (openLoginPage ?
             <Login authModeHandler={setIsAuth} openSignupPage={() => setOpenLoginPage(false)} />
             :
-            <Signup openLoginPageHandler={() => setOpenLoginPage(true)} />
+            <Signup openLoginPageHandler={() => setOpenLoginPage(true)} />)
       }
     </main>
   )

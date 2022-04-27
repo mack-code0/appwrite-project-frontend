@@ -19,10 +19,12 @@ const Logo = ({
             <h3>GMR</h3>
             <div className="d-flex align-items-center">
                 {
-                    isAccountOpen ?
-                        <img onClick={openAccount} width="35" src={isAccountOpen ? Back : Settings} alt="" />
-                        : viewReceipt && <img onClick={homepage} width="35" src={Home} alt="" />
+                    authenticated &&
+                    <img onClick={openAccount} width="35" src={isAccountOpen ? Back : Settings} alt="" />
                 }
+
+                {authenticated && viewReceipt && <img onClick={homepage} width="35" src={Home} alt="" />}
+
                 {
                     !authenticated ?
                         (

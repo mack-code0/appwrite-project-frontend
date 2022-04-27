@@ -1,5 +1,4 @@
 import { useState } from "react"
-import appwritesdk from "../../util/appwritesdk"
 import { login } from "../../util/authentication"
 
 const Login = ({ authModeHandler }) => {

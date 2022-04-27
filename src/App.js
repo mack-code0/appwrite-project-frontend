@@ -25,12 +25,12 @@ function App() {
   const [openLoader, setOpenLoader] = useState(false)
   const [viewReceipt, setViewReceipt] = useState(false)
   const [openLoginPage, setOpenLoginPage] = useState(false)
-  const [isAuth, setIsAuth] = useState(isLoggedIn())
+  const [isAuth, setIsAuth] = useState("")
 
 
   useEffect(() => {
     openLoaderHandler()
-    console.log(isAuth);
+    console.log(isLoggedIn())
   }, [isAuth])
 
   const addProduct = (product) => {
@@ -103,8 +103,8 @@ function App() {
     <main className="w-50 mx-auto">
       <Loader loaderHandler={openLoader} />
       <Logo
-        authenticated={isAuth}
         logoutHandler={setIsAuth}
+        authenticated={isAuth}
         openLoginPage={openLoginPage}
         openSignupPageHandler={() => setOpenLoginPage(false)}
         openLoginPageHandler={() => setOpenLoginPage(true)}

@@ -26,7 +26,7 @@ const Logo = ({
                 {authenticated && viewReceipt && <img onClick={homepage} width="35" src={Home} alt="" />}
 
                 {
-                    !authenticated ?
+                    !authenticated && typeof authenticated == "string" ?
                         (
                             openLoginPage ?
                                 <button onClick={openSignupPageHandler}>Signup</button>

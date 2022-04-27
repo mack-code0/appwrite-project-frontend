@@ -14,7 +14,6 @@ import Signup from "./components/auth/Signup"
 import { isLoggedIn } from "./util/authentication"
 import Login from "./components/auth/Login"
 
-
 function App() {
   const [productList, setProductList] = useState("")
   const [productToEdit, setProductToEdit] = useState("")
@@ -30,7 +29,7 @@ function App() {
 
   useEffect(() => {
     openLoaderHandler()
-    console.log(isLoggedIn())
+    isLoggedIn(cb=>setIsAuth(cb))
   }, [isAuth])
 
   const addProduct = (product) => {

@@ -17,24 +17,33 @@ const Logo = ({
     return (
         <div className="logo d-flex align-items-center justify-content-between">
             <h3>GMR</h3>
-            <div className="d-flex align-items-center">
-                {
-                    authenticated &&
-                    <img onClick={openAccount} width="35" src={isAccountOpen ? Back : Settings} alt="" />
-                }
+            {
+                typeof authenticated === "boolean" &&
+                <div className="d-flex align-items-center">
+                    {
+                        authenticated &&
+                        <img onClick={openAccount} width="35" src={isAccountOpen ? Back : Settings} alt="" />
+                    }
 
-                {authenticated && viewReceipt && <img onClick={homepage} width="35" src={Home} alt="" />}
+                    {authenticated && viewReceipt && <img onClick={homepage} width="35" src={Home} alt="" />}
 
-                {
-                    !authenticated && typeof authenticated == "string" ?
-                        (
-                            openLoginPage ?
-                                <button onClick={openSignupPageHandler}>Signup</button>
-                                : <button onClick={openLoginPageHandler}>Login</button>
-                        )
-                        : <button onClick={() => { logout(); logoutHandler(false) }}>Logout</button>
-                }
-            </div>
+                    {
+                        !authenticated ?
+                            (
+                                openLoginPage ?
+                                    <button onClick={openSignupPageHandler}>Signup</button>
+                                    : <button onClick={openLoginPageHandler}>Login</button>
+                            )
+                            : <button onClick={() => {
+                                logout((code) => {
+                                    if (code === 400) return
+                                    logoutHandler(false);
+                                })
+                            }
+                            }>Logout</button>
+                    }
+                </div>
+            }
         </div>
     )
 }

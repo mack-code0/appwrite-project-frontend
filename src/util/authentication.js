@@ -1,38 +1,41 @@
 import appwritesdk from "./appwritesdk";
-export const isLoggedIn = () => {
+export const isLoggedIn = (cb) => {
     const storage = localStorage.getItem("gmrauthsess")
-    
-    if(!storage){
-        return false
+
+    if (!storage) {
+        return cb(false)
     }
-    let _value;
 
     let getSession = appwritesdk.getSession(storage)
     getSession.then(function (session) {
-        if (!session) {
-            _value = false
-            return
-        }
+        if (!session) return cb(false)
 
         if ((session.expire * 1000) <= Date.now()) {
             let updateSessionPromise = appwritesdk.updateSession()
-            updateSessionPromise.then(function (updatedSession){
-                _value = true
-                return
-            }, function (updatedSessionError){
-                _value = false
-                return
+            updateSessionPromise.then(function (updatedSession) {
+                return cb(true)
+            }, function (updatedSessionError) {
+                return cb(false)
             })
         }
 
-        _value = true
-        return
+        return cb(true)
     }, function (error) {
-        _value = false
-        return
+        return cb(false)
     })
+}
 
-    return _value
+const getSession = async (id) => {
+    try {
+        let session = await appwritesdk.getSession(id)
+        if ((session.expire * 1000) <= Date.now()) {
+            await appwritesdk.updateSession(id)
+            return true
+        }
+        return true
+    }catch(err){
+        return false
+    }
 }
 
 export const login = (email, password) => {
@@ -49,13 +52,13 @@ export const login = (email, password) => {
     });
 }
 
-export const logout = () => {
+export const logout = (cb) => {
     const sessionId = localStorage.getItem("gmrauthsess")
     let promise = appwritesdk.deleteSession(sessionId)
     promise.then(function (response) {
-        console.log("object");
         localStorage.clear()
+        cb({code: 200})
     }, function (error) {
-        console.log(error);
+        cb({code: 400})
     })
 }

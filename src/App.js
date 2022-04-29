@@ -23,7 +23,7 @@ function App() {
   const [openThemeSelector, setOpenThemeSelector] = useState(false)
   const [openAccount, setOpenAccount] = useState(false)
   const [openLoader, setOpenLoader] = useState(false)
-  const [viewReceipt, setViewReceipt] = useState(false)
+  const [viewReceipt, setViewReceipt] = useState(true)
   const [openLoginPage, setOpenLoginPage] = useState(false)
   const [isAuth, setIsAuth] = useState("")
 

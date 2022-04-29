@@ -25,6 +25,7 @@ const Receipt = ({ products, totalPrice }) => {
                 }
             })
         }).catch(err=>{
+            console.log(err)
             console.log("An Error Occured")
         })
     }

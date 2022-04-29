@@ -37,3 +37,13 @@
     border: 1px solid #999;
     font-size: 20px;
   }
+
+  @media screen and (max-width: 800px) {
+    .box{
+      width: 90% !important;
+      padding: 0 !important;
+    }
+    .close-icon{
+      right: calc(15% - 45px) !important;
+    }
+  }

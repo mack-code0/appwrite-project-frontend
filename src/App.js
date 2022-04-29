@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle.min"
-import Receipt from './components/Receipt/Receipt'
 import "./components/ReceiptForm/FormHolder.css"
+import "./App.css"
+import Receipt from './components/Receipt/Receipt'
 // import html2canvas from 'html2canvas'
 import FormHolder from './components/ReceiptForm/FormHolder'
 import Popup from "./components/ReceiptForm/PopUp/EditPopUp"
@@ -99,7 +100,7 @@ function App() {
   }
 
   return (
-    <main className="w-50 mx-auto">
+    <main className="main-container mx-auto">
       <Loader loaderHandler={openLoader} />
       <Logo
         logoutHandler={setIsAuth}

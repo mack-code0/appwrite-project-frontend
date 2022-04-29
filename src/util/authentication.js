@@ -25,18 +25,16 @@ export const isLoggedIn = (cb) => {
     })
 }
 
-const getSession = async (id) => {
-    try {
-        let session = await appwritesdk.getSession(id)
-        if ((session.expire * 1000) <= Date.now()) {
-            await appwritesdk.updateSession(id)
-            return true
-        }
-        return true
-    }catch(err){
-        return false
-    }
+export const genToken = (cb) => {
+    let promise = appwritesdk.createJWT();
+
+    promise.then(function (response) {
+        cb({ jwt: response.jwt })
+    }, function (error) {
+        console.log(error);
+    });
 }
+
 
 export const login = (email, password) => {
     let promise = appwritesdk.createSession(email, password);
@@ -48,17 +46,19 @@ export const login = (email, password) => {
         // if(error.code === 429){
         //     alert("Too many request")
         // }
+        alert(error)
         return false
     });
 }
+
 
 export const logout = (cb) => {
     const sessionId = localStorage.getItem("gmrauthsess")
     let promise = appwritesdk.deleteSession(sessionId)
     promise.then(function (response) {
         localStorage.clear()
-        cb({code: 200})
+        cb({ code: 200 })
     }, function (error) {
-        cb({code: 400})
+        cb({ code: 400 })
     })
 }

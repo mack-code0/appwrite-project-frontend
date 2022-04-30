@@ -37,7 +37,7 @@ const Receipt = ({ products, totalPrice }) => {
                 <button onClick={saveReceiptHandler} className="save py-2 px-3">Save</button>
             </div>
             {/* <ReceiptTest products={products} totalPrice={totalPrice} /> */}
-            <Receipt2 />
+            <Receipt1 />
         </div>
     )
 }

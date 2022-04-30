@@ -1,3 +1,4 @@
+import AccountData from "./CompanyInfoForm/AccountData"
 import DefaultCard from "./DefaultCard"
 
 const Account = ({ openThemeOptions }) => {
@@ -15,7 +16,9 @@ const Account = ({ openThemeOptions }) => {
             </div>
             <div className="col-8">
                 <div className="tab-content" id="nav-tabContent">
-                    <div className="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">Home</div>
+                    <div className="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                        <AccountData />
+                    </div>
                     <div className="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
                         <DefaultCard changeTheme={openThemeOptions} />
                     </div>

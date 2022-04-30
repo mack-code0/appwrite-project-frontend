@@ -7,4 +7,4 @@ sdk
     .setProject('625ac97006dc2d58b12c') // Your project ID
 ;
 
-export default sdk.account
+export default sdk

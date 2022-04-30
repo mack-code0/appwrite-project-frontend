@@ -6,12 +6,12 @@ export const isLoggedIn = (cb) => {
         return cb(false)
     }
 
-    let getSession = appwritesdk.getSession(storage)
+    let getSession = appwritesdk.account.getSession(storage)
     getSession.then(function (session) {
         if (!session) return cb(false)
 
         if ((session.expire * 1000) <= Date.now()) {
-            let updateSessionPromise = appwritesdk.updateSession()
+            let updateSessionPromise = appwritesdk.account.updateSession()
             updateSessionPromise.then(function (updatedSession) {
                 return cb(true)
             }, function (updatedSessionError) {
@@ -26,7 +26,7 @@ export const isLoggedIn = (cb) => {
 }
 
 export const genToken = (cb) => {
-    let promise = appwritesdk.createJWT();
+    let promise = appwritesdk.account.createJWT();
 
     promise.then(function (response) {
         cb({ jwt: response.jwt })
@@ -37,7 +37,7 @@ export const genToken = (cb) => {
 
 
 export const login = (email, password) => {
-    let promise = appwritesdk.createSession(email, password);
+    let promise = appwritesdk.account.createSession(email, password);
 
     return promise.then(function (response) {
         localStorage.setItem("gmrauthsess", response.$id)
@@ -54,7 +54,7 @@ export const login = (email, password) => {
 
 export const logout = (cb) => {
     const sessionId = localStorage.getItem("gmrauthsess")
-    let promise = appwritesdk.deleteSession(sessionId)
+    let promise = appwritesdk.account.deleteSession(sessionId)
     promise.then(function (response) {
         localStorage.clear()
         cb({ code: 200 })

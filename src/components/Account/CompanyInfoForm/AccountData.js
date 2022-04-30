@@ -3,14 +3,21 @@ import { createInfo, getInfo } from "../../../util/contollers"
 import "./Address.css"
 
 const Address = ({ authModeHandler }) => {
-    useEffect(()=>{
-        getInfo()
-    })
-
+    
     const [name, setName] = useState("")
     const [address, setAddress] = useState("")
     const [city, setCity] = useState("")
     const [country, setCountry] = useState("")
+    const [edit] = useState(name ? true : false)
+    
+    useEffect(()=>{
+        getInfo().then(({data})=>{
+            setName(data.name)
+            setAddress(data.address)
+            setCity(data.city)
+            setCountry(data.country)
+        })
+    }, [])
 
     const nameHandler = (e) => {
         setName(e.target.value)
@@ -30,8 +37,7 @@ const Address = ({ authModeHandler }) => {
 
     const submit = (e) => {
         e.preventDefault()
-
-        createInfo(address, name, city, country).then(response=>{
+        createInfo(address, name, city, country, edit).then(response=>{
             console.log(response);
         }).catch(err=>{
             console.log(err);

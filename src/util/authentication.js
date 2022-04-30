@@ -26,13 +26,19 @@ export const isLoggedIn = (cb) => {
 }
 
 export const genToken = (cb) => {
-    let promise = appwritesdk.account.createJWT();
+    const token = localStorage?.getItem("gmrauthtoken")
+    if(!token){
+        let promise = appwritesdk.account.createJWT();
+    
+        promise.then(function (response) {
+            return cb({ jwt: response.jwt })
+        }, function (error) {
+            return cb({error: "An error occured", code: error.code})
+        });
+    }
 
-    promise.then(function (response) {
-        cb({ jwt: response.jwt })
-    }, function (error) {
-        console.log(error);
-    });
+    console.log("gt here")
+    cb(token)
 }
 
 
@@ -41,6 +47,7 @@ export const login = (email, password) => {
 
     return promise.then(function (response) {
         localStorage.setItem("gmrauthsess", response.$id)
+        localStorage.setItem("gmrauthid", response.userId)
         return true
     }, function (error) {
         // if(error.code === 429){

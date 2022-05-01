@@ -2,6 +2,8 @@ import Settings from "./setting.png"
 import Back from "./back.png"
 import Home from "./homepage.png"
 import { logout } from "../../util/authentication"
+import { useContext } from "react"
+import { Context } from "../../Context/Context"
 
 const Logo = ({
     openAccount,
@@ -9,26 +11,27 @@ const Logo = ({
     viewReceipt,
     homepage,
     openLoginPage,
-    authenticated,
-    logoutHandler,
     openSignupPageHandler,
     openLoginPageHandler
 }) => {
+    const { isLoggedIn_h } = useContext(Context)
+    const [isLoggedIn, setIsLoggedIn] = isLoggedIn_h
+
     return (
         <div className="logo d-flex align-items-center justify-content-between">
             <h3>GMR</h3>
             {
-                typeof authenticated === "boolean" &&
+                typeof isLoggedIn === "boolean" &&
                 <div className="d-flex align-items-center">
                     {
-                        authenticated &&
+                        isLoggedIn &&
                         <img onClick={openAccount} width="35" src={isAccountOpen ? Back : Settings} alt="" />
                     }
 
-                    {authenticated && viewReceipt && <img onClick={homepage} width="35" src={Home} alt="" />}
+                    {isLoggedIn && viewReceipt && <img onClick={homepage} width="35" src={Home} alt="" />}
 
                     {
-                        !authenticated ?
+                        !isLoggedIn ?
                             (
                                 openLoginPage ?
                                     <button onClick={openSignupPageHandler}>Signup</button>
@@ -37,7 +40,7 @@ const Logo = ({
                             : <button onClick={() => {
                                 logout((code) => {
                                     if (code === 400) return
-                                    logoutHandler(false);
+                                    setIsLoggedIn(false)
                                 })
                             }
                             }>Logout</button>

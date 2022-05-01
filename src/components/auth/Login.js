@@ -2,11 +2,13 @@ import { useState, useContext } from "react"
 import { Context } from "../../Context/Context"
 import { login } from "../../util/authentication"
 
-const Login = ({ authModeHandler }) => {
+const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const { isLoggedIn_h } = useContext(Context)
+    
+    const { isLoggedIn_h, isLoading_h } = useContext(Context)
     const [loggedIn, setIsLoggedIn] = isLoggedIn_h
+    const [isLoading, setIsLoading] = isLoading_h
 
     const emailHandler = (e) => {
         setEmail(e.target.value)
@@ -17,6 +19,7 @@ const Login = ({ authModeHandler }) => {
     }
 
     const submitLogin = e => {
+        setIsLoading(true)
         e.preventDefault()
 
         if (!email || !password) {
@@ -25,6 +28,7 @@ const Login = ({ authModeHandler }) => {
 
         login(email, password).then(bool => {
             setIsLoggedIn(bool)
+            setIsLoading(false)
         })
     }
 

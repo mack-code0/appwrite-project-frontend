@@ -1,9 +1,13 @@
-import { useState, useEffect } from "react"
+import { useState, useContext } from "react"
+import { Context } from "../../Context/Context"
 
 const Form = ({ addToListHandler, themeSelector, reset }) => {
     const [name, setName] = useState("")
     const [price, setPrice] = useState("")
     const [quantity, setQuantity] = useState("")
+
+    const { alert_h } = useContext(Context)
+    const [alertModal, setAlertModal] = alert_h
 
     const nameHandler = (e) => {
         setName(e.target.value)
@@ -20,7 +24,7 @@ const Form = ({ addToListHandler, themeSelector, reset }) => {
         e.preventDefault()
 
         if (!name || !price || !quantity) {
-            return alert("Invalid Inputs")
+            return setAlertModal(() => { return { mode: true, msg: "Invalid Inputs" } })
         }
 
         addToListHandler({

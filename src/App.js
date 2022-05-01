@@ -21,33 +21,37 @@ function App() {
   const [productList, setProductList] = useState("")
   const [productToEdit, setProductToEdit] = useState("")
   const [totalPrice, setTotalPrice] = useState(0)
-  const [isOpen, setIsOpen] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const [openThemeSelector, setOpenThemeSelector] = useState(false)
   const [openAccount, setOpenAccount] = useState(false)
-  const [openLoader, setOpenLoader] = useState(false)
-  const [viewReceipt, setViewReceipt] = useState(true)
+  const [viewReceipt, setViewReceipt] = useState(false)
   const [openLoginPage, setOpenLoginPage] = useState(false)
-  const [isAuth, setIsAuth] = useState("")
 
-  const {alert_h, loading_h, isLoggedIn_h} = useContext(Context)
-  const [ alertModal, setAlertModal ] = alert_h
-  const [ loadingModal, setLoadingModal ] = loading_h
-  const [isLoggedIn, setIsLoggedIn] = isLoggedIn_h
+  const { alert_h, isLoading_h, isLoggedIn_h } = useContext(Context)
+  const [alertModal, setAlertModal] = alert_h
+  const [isLoading, setIsLoading] = isLoading_h
+  const [isLoggedIn] = isLoggedIn_h
+
+  useEffect(() => {
+    setIsLoading(true)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+  }, [setIsLoading])
 
 
   useEffect(() => {
-    if (alert_h) {
+    if (alertModal.mode) {
       Swal.fire({
-        title: 'Error!',
-        text: 'Do you want to continue',
+        title: alertModal.msg,
         icon: 'error',
-        showConfirmButton: false,
-        timer: 4000
+        showConfirmButton: true,
+        timer: 3000,
+      }).then(() => {
+        setAlertModal(false)
       })
     }
-    openLoaderHandler()
-    isLoggedIn(cb => setIsAuth(cb))
-  }, [isAuth, alert_h])
+  }, [alertModal, setAlertModal])
 
   const addProduct = (product) => {
     setTotalPrice((prev) => {
@@ -65,7 +69,7 @@ function App() {
 
   const editProduct = (e) => {
     setProductToEdit(productList.find(prod => prod.id.toString() === e.target.value.toString()))
-    setIsOpen(!isOpen);
+    setEditMode(!editMode);
   }
 
   const submitEditedProduct = (product) => {
@@ -74,7 +78,7 @@ function App() {
       prev[prodIndex] = product
       return prev
     })
-    setIsOpen(false)
+    setEditMode(false)
   }
 
   const themeSelector = () => {
@@ -95,7 +99,9 @@ function App() {
 
   const viewReceiptHandler = () => {
     if (productList.length <= 0) {
-      return alert("Add Product")
+      return setAlertModal(() => {
+        return { mode: true, msg: "Please Add Product" }
+      })
     }
     openLoaderHandler()
     setOpenThemeSelector(false)
@@ -108,19 +114,17 @@ function App() {
   }
 
   const openLoaderHandler = () => {
-    setOpenLoader(true)
+    setIsLoading(true)
 
     setTimeout(() => {
-      setOpenLoader(false)
+      setIsLoading(false)
     }, 1000)
   }
 
   return (
     <main className="main-container mx-auto">
-      <Loader loaderHandler={openLoader} />
+      <Loader loaderHandler={isLoading} />
       <Logo
-        logoutHandler={setIsAuth}
-        authenticated={isAuth}
         openLoginPage={openLoginPage}
         openSignupPageHandler={() => setOpenLoginPage(false)}
         openLoginPageHandler={() => setOpenLoginPage(true)}
@@ -129,8 +133,9 @@ function App() {
         viewReceipt={viewReceipt}
         isAccountOpen={openAccount}
       />
+
       {
-        isAuth ?
+        isLoggedIn ?
           (openAccount ?
             <Account openThemeOptions={themeSelector} /> :
             <>
@@ -138,12 +143,12 @@ function App() {
                 <ReceiptHolder products={productList} /> :
                 <FormHolder resetHandler={reset} addToList={addProduct} themeSelectorHandler={themeSelector} products={productList} editHandler={editProduct} deleteHandler={deleteProduct} />
               }
-              {isOpen && <Popup editProductHandler={submitEditedProduct} contentHandler={productToEdit} handleClose={() => setIsOpen(false)} />}
+              {editMode && <Popup editProductHandler={submitEditedProduct} contentHandler={productToEdit} handleClose={() => setEditMode(false)} />}
               {openThemeSelector && <CardPopup viewReceipt={viewReceiptHandler} handleClose={() => setOpenThemeSelector(false)} />}
             </>)
           :
           (openLoginPage ?
-            <Login authModeHandler={setIsAuth} openSignupPage={() => setOpenLoginPage(false)} />
+            <Login openSignupPage={() => setOpenLoginPage(false)} />
             :
             <Signup openLoginPageHandler={() => setOpenLoginPage(true)} />)
       }

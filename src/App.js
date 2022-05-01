@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle.min"
 import "./components/ReceiptForm/FormHolder.css"
 import "./App.css"
+import { Context } from "./Context/Context"
+import Swal from 'sweetalert2'
+// /////////////////////////
 import ReceiptHolder from './components/Receipt/ReceiptHolder'
 import FormHolder from './components/ReceiptForm/FormHolder'
 import Popup from "./components/ReceiptForm/PopUp/EditPopUp"
@@ -26,11 +29,21 @@ function App() {
   const [openLoginPage, setOpenLoginPage] = useState(false)
   const [isAuth, setIsAuth] = useState("")
 
+  const { alert, setAlert } = useContext(Context);
+
 
   useEffect(() => {
+    if(alert){
+      Swal.fire({
+        title: 'Error!',
+        text: 'Do you want to continue',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      })
+    }
     openLoaderHandler()
     isLoggedIn(cb=>setIsAuth(cb))
-  }, [isAuth])
+  }, [isAuth, alert])
 
   const addProduct = (product) => {
     setTotalPrice((prev) => {

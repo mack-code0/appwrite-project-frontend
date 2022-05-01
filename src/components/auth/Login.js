@@ -1,9 +1,12 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { Context } from "../../Context/Context"
 import { login } from "../../util/authentication"
 
 const Login = ({ authModeHandler }) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const { isLoggedIn_h } = useContext(Context)
+    const [loggedIn, setIsLoggedIn] = isLoggedIn_h
 
     const emailHandler = (e) => {
         setEmail(e.target.value)
@@ -21,7 +24,7 @@ const Login = ({ authModeHandler }) => {
         }
 
         login(email, password).then(bool => {
-            authModeHandler(bool)
+            setIsLoggedIn(bool)
         })
     }
 

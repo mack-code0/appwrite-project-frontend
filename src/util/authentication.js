@@ -1,28 +1,24 @@
 import appwritesdk from "./appwritesdk";
-export const isLoggedIn = (cb) => {
+export const isAuthenticated = () => {
+
+}
+export const isAuth = async () => {
     const storage = localStorage.getItem("gmrauthsess")
 
     if (!storage) {
-        return cb(false)
+        return false
     }
 
-    let getSession = appwritesdk.account.getSession(storage)
-    getSession.then(function (session) {
-        if (!session) return cb(false)
-
-        if ((session.expire * 1000) <= Date.now()) {
-            let updateSessionPromise = appwritesdk.account.updateSession()
-            updateSessionPromise.then(function (updatedSession) {
-                return cb(true)
-            }, function (updatedSessionError) {
-                return cb(false)
-            })
-        }
-
-        return cb(true)
-    }, function (error) {
-        return cb(false)
-    })
+    let session = await appwritesdk.account.getSession(storage)
+    if (!session) return false
+    if ((session.expire * 1000) <= Date.now()) {
+        let updateSessionPromise = appwritesdk.account.updateSession()
+        updateSessionPromise.then(function (updatedSession) {
+            return true
+        }, function (updatedSessionError) {
+            return false
+        })
+    }
 }
 
 export const genToken = async () => {

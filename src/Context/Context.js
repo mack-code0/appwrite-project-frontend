@@ -1,13 +1,21 @@
 import React, { useState } from "react"
+import { isAuth } from "../util/authentication"
 
 export const Context = React.createContext()
 export const ContextProvider = ({ children }) => {
-    const [alertModal, setAlertModal] = useState(true);
+    const [alertModal, setAlertModal] = useState(false);
     const [loadingModal, setLoadingModal] = useState(false)
-    const [loggedIn, setLoggedIn] = useState(false)
+    const [isloggedIn, setIsLoggedIn] = useState(false)
 
+    
     return (
-        <Context.Provider value={{ alert_h: [alertModal, setAlertModal], loading_h: [loadingModal, setLoadingModal] }}>
+        <Context.Provider value={
+            {
+                alert_h: [alertModal, setAlertModal],
+                loading_h: [loadingModal, setLoadingModal],
+                isLoggedIn_h: [isloggedIn, setIsLoggedIn]
+            }
+        }>
             {children}
         </Context.Provider>
     );

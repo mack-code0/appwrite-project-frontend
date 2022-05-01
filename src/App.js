@@ -29,20 +29,23 @@ function App() {
   const [openLoginPage, setOpenLoginPage] = useState(false)
   const [isAuth, setIsAuth] = useState("")
 
-  const { alert, setAlert } = useContext(Context);
+  const {alert_h, loading_h} = useContext(Context)
+  const [ alertModal, setAlertModal ] = alert_h
+  const [ loadingModal, setLoadingModal ] = loading_h
 
 
   useEffect(() => {
-    if(alert){
+    if (alert) {
       Swal.fire({
         title: 'Error!',
         text: 'Do you want to continue',
         icon: 'error',
-        confirmButtonText: 'Cool'
+        showConfirmButton: false,
+        timer: 4000
       })
     }
     openLoaderHandler()
-    isLoggedIn(cb=>setIsAuth(cb))
+    isLoggedIn(cb => setIsAuth(cb))
   }, [isAuth, alert])
 
   const addProduct = (product) => {

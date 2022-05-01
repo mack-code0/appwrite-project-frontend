@@ -3,8 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle.min"
 import "./components/ReceiptForm/FormHolder.css"
 import "./App.css"
-import Receipt from './components/Receipt/Receipt'
-// import html2canvas from 'html2canvas'
+import ReceiptHolder from './components/Receipt/ReceiptHolder'
 import FormHolder from './components/ReceiptForm/FormHolder'
 import Popup from "./components/ReceiptForm/PopUp/EditPopUp"
 import CardPopup from "./components/Themes/Popup/CardPopup"
@@ -119,7 +118,7 @@ function App() {
             <Account openThemeOptions={themeSelector} /> :
             <>
               {viewReceipt ?
-                <Receipt products={productList} /> :
+                <ReceiptHolder products={productList} /> :
                 <FormHolder resetHandler={reset} addToList={addProduct} themeSelectorHandler={themeSelector} products={productList} editHandler={editProduct} deleteHandler={deleteProduct} />
               }
               {isOpen && <Popup editProductHandler={submitEditedProduct} contentHandler={productToEdit} handleClose={() => setIsOpen(false)} />}

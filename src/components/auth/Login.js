@@ -21,7 +21,6 @@ const Login = ({ authModeHandler }) => {
         }
 
         login(email, password).then(bool => {
-            console.log(bool);
             authModeHandler(bool)
         })
     }

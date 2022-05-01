@@ -25,20 +25,12 @@ export const isLoggedIn = (cb) => {
     })
 }
 
-export const genToken = (cb) => {
+export const genToken = async () => {
     const token = localStorage?.getItem("gmrauthtoken")
-    if(!token){
-        let promise = appwritesdk.account.createJWT();
-    
-        promise.then(function (response) {
-            return cb({ jwt: response.jwt })
-        }, function (error) {
-            return cb({error: "An error occured", code: error.code})
-        });
+    if (!token) {
+        let response = await appwritesdk.account.createJWT();
+        localStorage.setItem("gmrauthtoken", response.jwt)
     }
-
-    console.log("gt here")
-    cb(token)
 }
 
 

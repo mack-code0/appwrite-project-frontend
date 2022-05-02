@@ -1,9 +1,14 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
+import Swal from "sweetalert2"
+import { Context } from "../../Context/Context"
 
 const Signup = ({ openLoginPageHandler }) => {
     const [email, setEmail] = useState("")
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
+
+    const { isLoggedIn_h, isLoading_h } = useContext(Context)
+    const [isLoading, setIsLoading] = isLoading_h
 
     const emailHandler = (e) => {
         setEmail(e.target.value)
@@ -19,10 +24,17 @@ const Signup = ({ openLoginPageHandler }) => {
 
     const signup = e => {
         e.preventDefault()
-
         if (!email || !password || !name) {
-            return alert("Invalid Inputs")
+            return Swal.fire({
+                title: "Invalid inputs",
+                icon: 'error',
+                showConfirmButton: true,
+                timer: 3000,
+            })
         }
+
+        setIsLoading(true)
+
 
         fetch("http://localhost:7000/signup", {
             method: "POST",
@@ -32,15 +44,22 @@ const Signup = ({ openLoginPageHandler }) => {
             }
         }).then(res => res.json())
             .then(response => {
-                console.log(response);
+                if (response.error) {
+                    throw new Error("An error occured")
+                }
                 setName("")
                 setEmail("")
                 setPassword("")
 
                 openLoginPageHandler()
             }).catch(err => {
-                console.log(err);
-            })
+                Swal.fire({
+                    title: "An error Occured, Check your inputs",
+                    icon: 'error',
+                    showConfirmButton: true,
+                    timer: 3000,
+                })
+            }).finally(() => setIsLoading(false))
     }
 
     return (

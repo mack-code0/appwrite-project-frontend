@@ -42,10 +42,6 @@ export const login = (email, password) => {
         localStorage.setItem("gmrauthid", response.userId)
         return true
     }, function (error) {
-        // if(error.code === 429){
-        //     alert("Too many request")
-        // }
-        alert(error)
         return false
     });
 }

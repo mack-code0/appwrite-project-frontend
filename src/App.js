@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react"
+import { renderToString } from "react-dom/server"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle.min"
 import "./components/ReceiptForm/FormHolder.css"
@@ -14,8 +15,8 @@ import Account from "./components/Account/Account"
 import Logo from "./components/ReceiptForm/Logo"
 import Loader from "./components/Loader/Loader"
 import Signup from "./components/auth/Signup"
-import { isLoggedIn } from "./util/authentication"
 import Login from "./components/auth/Login"
+import EditForm from "./components/ReceiptForm/PopUp/EditForm"
 
 function App() {
   const [productList, setProductList] = useState("")
@@ -69,7 +70,21 @@ function App() {
 
   const editProduct = (e) => {
     setProductToEdit(productList.find(prod => prod.id.toString() === e.target.value.toString()))
-    setEditMode(!editMode);
+    // setEditMode(!editMode);
+    Swal.fire({
+      title: '<strong>HTML <u>example</u></strong>',
+      icon: 'info',
+      html: renderToString(<EditForm content={productToEdit}/>),
+      showCloseButton: true,
+      showCancelButton: true,
+      focusConfirm: false,
+      confirmButtonText:
+        '<i class="fa fa-thumbs-up"></i> Great!',
+      confirmButtonAriaLabel: 'Thumbs up, great!',
+      cancelButtonText:
+        '<i class="fa fa-thumbs-down"></i>',
+      cancelButtonAriaLabel: 'Thumbs down'
+    })
   }
 
   const submitEditedProduct = (product) => {
@@ -92,8 +107,25 @@ function App() {
   }
 
   const reset = () => {
-    if (productList.length > 0 && window.confirm("Are you sure you want to cancel?") === true) {
-      setProductList([])
+    if (productList.length > 0) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setProductList([])
+          Swal.fire(
+            'Deleted!',
+            'Your Products has been deleted.',
+            'success'
+          )
+        }
+      })
     }
   }
 

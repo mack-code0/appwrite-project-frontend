@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext } from "react"
-import { renderToString } from "react-dom/server"
+import React, { useState, useEffect, useContext } from "react"
+import ReactDOMServer from "react-dom/server"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle.min"
 import "./components/ReceiptForm/FormHolder.css"
@@ -35,6 +35,7 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true)
+    console.log("object");
     setTimeout(() => {
       setIsLoading(false)
     }, 1000)
@@ -62,6 +63,8 @@ function App() {
     setProductList((prev) => {
       return [...prev, { ...product, id: Math.random() }]
     })
+
+    console.log(productList);
   }
 
   const deleteProduct = (e) => {
@@ -69,21 +72,22 @@ function App() {
   }
 
   const editProduct = (e) => {
-    setProductToEdit(productList.find(prod => prod.id.toString() === e.target.value.toString()))
+    const initialProduct = productList.find(prod => prod.id.toString() === e.target.value.toString())
     // setEditMode(!editMode);
     Swal.fire({
-      title: '<strong>HTML <u>example</u></strong>',
-      icon: 'info',
-      html: renderToString(<EditForm content={productToEdit}/>),
-      showCloseButton: true,
-      showCancelButton: true,
+      title: 'Edit Product',
+      html: ReactDOMServer.renderToString(<EditForm content={initialProduct} />),
       focusConfirm: false,
-      confirmButtonText:
-        '<i class="fa fa-thumbs-up"></i> Great!',
-      confirmButtonAriaLabel: 'Thumbs up, great!',
-      cancelButtonText:
-        '<i class="fa fa-thumbs-down"></i>',
-      cancelButtonAriaLabel: 'Thumbs down'
+      preConfirm: () => {
+        const name = document.getElementById('edit-mode-name').value
+        const price = document.getElementById('edit-mode-price').value
+        const quantity = document.getElementById('edit-mode-quantity').value
+        return setProductList((prev) => {
+          const prodIndex = productList.findIndex(prod => prod.id.toString() === e.target.value.toString())
+          prev[prodIndex] = { name: name, price: price }
+          return prev
+        })
+      }
     })
   }
 

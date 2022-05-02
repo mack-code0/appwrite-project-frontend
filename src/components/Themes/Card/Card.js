@@ -1,5 +1,7 @@
-import Receipt1 from "./receipt1.jpg"
-const Card = ({ viewReceipt, receiptNo = 1 }) => {
+import Receipt1 from "../images/receipt1.jpg"
+import Receipt2 from "../images/receipt2.jpg"
+
+const Card = ({ viewReceipt, receiptNo }) => {
     var receieptHolder;
 
     switch (receiptNo) {
@@ -7,7 +9,7 @@ const Card = ({ viewReceipt, receiptNo = 1 }) => {
             receieptHolder = Receipt1
             break;
         case 2:
-            receieptHolder = Receipt1
+            receieptHolder = Receipt2
             break;
         case 3:
             receieptHolder = Receipt1

@@ -1,4 +1,4 @@
-import "./../Themes/Popup/CardHolder.css"
+import "../Themes/Card/CardHolder.css"
 
 const DefaultCard = ({ changeTheme }) => {
     return (

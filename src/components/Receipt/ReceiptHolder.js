@@ -5,7 +5,7 @@ import CreateImage from "../../util/CreateImage"
 import { genToken } from "../../util/authentication"
 import "./Button.css"
 
-const Receipt = ({ products, totalPrice }) => {
+const Receipt = ({ products, totalPrice, receiptNo }) => {
     const saveReceiptHandler = async () => {
         try {
             const image = await CreateImage()
@@ -26,6 +26,23 @@ const Receipt = ({ products, totalPrice }) => {
         }
     }
 
+    let ReceiptHolder;
+    switch (receiptNo) {
+        case 1:
+            ReceiptHolder = Receipt1
+            console.log("1");
+            break;
+
+        case 2:
+            ReceiptHolder = Receipt2
+            console.log("2");
+            break;
+
+        default:
+            ReceiptHolder = Receipt2
+            console.log(receiptNo)
+            break;
+    }
     return (
         <div className="">
             <div className="mb-4">
@@ -33,7 +50,7 @@ const Receipt = ({ products, totalPrice }) => {
                 <button onClick={saveReceiptHandler} className="save py-2 px-3">Save</button>
             </div>
             {/* <ReceiptTest products={products} totalPrice={totalPrice} /> */}
-            <Receipt1 />
+            <ReceiptHolder />
         </div>
     )
 }

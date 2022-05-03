@@ -68,7 +68,7 @@ const Receipt = ({ products, totalPrice }) => {
                                 </div>
 
                                 <div className="text-95 text-secondary-d3">
-                                    {products.map(product => <Product key={product.id} product={product} />)}
+                                    {products.map((product, index) => <Product key={product.id} product={product} index={index} />)}
                                 </div>
 
                                 <div className="row border-b-2 brc-default-l2"></div>

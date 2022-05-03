@@ -6,12 +6,12 @@ const Product = ({ product, deleteProduct, editProduct }) => {
 
             <div className="d-flex justify-content-between">
                 <div className="product-subinfo">
-                    <span className="product-title">Quantity: </span>
-                    <span>{product.quantity}</span>
-                </div>
-                <div className="product-subinfo">
                     <span className="product-title">Price: </span>
                     <span>${product.price}.00</span>
+                </div>
+                <div className="product-subinfo">
+                    <span className="product-title">Quantity: </span>
+                    <span>{product.quantity}</span>
                 </div>
             </div>
 

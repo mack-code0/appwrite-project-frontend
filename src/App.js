@@ -11,7 +11,7 @@ import ReceiptHolder from './components/Receipt/ReceiptHolder'
 import FormHolder from './components/ReceiptForm/FormHolder'
 import CardPopup from "./components/Themes/Card/CardPopup"
 import Account from "./components/Account/Account"
-import Logo from "./components/ReceiptForm/Logo"
+import Logo from "./components/Navbar/Navbar"
 import Loader from "./components/Loader/Loader"
 import Signup from "./components/auth/Signup"
 import Login from "./components/auth/Login"
@@ -56,7 +56,7 @@ function App() {
 
   const addProduct = (product) => {
     setProductList((prev) => {
-      return [...prev, { ...product, id: Math.random() }]
+      return [{ ...product, id: Math.random() }, ...prev]
     })
   }
 
@@ -143,7 +143,7 @@ function App() {
     }, 1000)
   }
 
-  const successfullyLoggedOut = () => {
+  const resetStates = () => {
     setProductList("")
     setOpenThemeSelector(false)
     setOpenAccount(false)
@@ -161,7 +161,7 @@ function App() {
         homepage={homepageHandler}
         viewReceipt={viewReceipt}
         isAccountOpen={openAccount}
-        logoutHandler={successfullyLoggedOut}
+        resetStates={resetStates}
       />
 
       {

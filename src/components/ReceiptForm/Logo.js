@@ -12,10 +12,12 @@ const Logo = ({
     homepage,
     openLoginPage,
     openSignupPageHandler,
-    openLoginPageHandler
+    openLoginPageHandler,
+    logoutHandler
 }) => {
-    const { isLoggedIn_h } = useContext(Context)
+    const { isLoggedIn_h, alert_h } = useContext(Context)
     const [isLoggedIn, setIsLoggedIn] = isLoggedIn_h
+    const [alertModal, setAlertModal] = alert_h
 
     return (
         <div className="logo d-flex align-items-center justify-content-between">
@@ -41,6 +43,8 @@ const Logo = ({
                                 logout((code) => {
                                     if (code === 400) return
                                     setIsLoggedIn(false)
+                                    logoutHandler()
+                                    setAlertModal(() => ({ mode: true, msg: "Logged out successfully", icon: "success" }))
                                 })
                             }
                             }>Logout</button>

@@ -43,8 +43,14 @@ const Login = () => {
     return (
         <section className="form">
             <form onSubmit={submitLogin} className="w-100 d-flex flex-column align-items-center">
-                <input type="email" value={email} onChange={emailHandler} placeholder="Email" />
-                <input type="password" value={password} onChange={passwordHandler} placeholder="Password" />
+                <div className="input-holder w-100">
+                    <label>Email</label>
+                    <input type="email" value={email} onChange={emailHandler} placeholder="Email" />
+                </div>
+                <div className="input-holder w-100">
+                    <label>Password</label>
+                    <input type="password" value={password} onChange={passwordHandler} placeholder="Password" />
+                </div>
                 <button type="submit">
                     Login
                 </button>

@@ -4,9 +4,9 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle.min"
 import "./components/ReceiptForm/FormHolder.css"
 import "./App.css"
-import { Context } from "./Context/Context"
 import Swal from 'sweetalert2'
 // /////////////////////////
+import { Context } from "./Context/Context"
 import ReceiptHolder from './components/Receipt/ReceiptHolder'
 import FormHolder from './components/ReceiptForm/FormHolder'
 import CardPopup from "./components/Themes/Card/CardPopup"
@@ -87,8 +87,6 @@ function App() {
     })
   }
 
-
-
   const themeSelector = () => {
     openLoaderHandler()
     setOpenThemeSelector(!openThemeSelector)
@@ -145,6 +143,13 @@ function App() {
     }, 1000)
   }
 
+  const successfullyLoggedOut = () => {
+    setProductList("")
+    setOpenThemeSelector(false)
+    setOpenAccount(false)
+    setViewReceipt(() => ({ mode: false, number: 0 }))
+  }
+
   return (
     <main className="main-container mx-auto">
       <Loader loaderHandler={isLoading} />
@@ -156,6 +161,7 @@ function App() {
         homepage={homepageHandler}
         viewReceipt={viewReceipt}
         isAccountOpen={openAccount}
+        logoutHandler={successfullyLoggedOut}
       />
 
       {

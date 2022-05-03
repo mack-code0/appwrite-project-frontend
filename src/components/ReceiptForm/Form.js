@@ -42,11 +42,20 @@ const Form = ({ addToListHandler, themeSelector, reset }) => {
         <section className="form">
             <form onSubmit={submitProduct} className="w-100 d-flex flex-column align-items-center">
 
-                <input type="text" value={name} onChange={nameHandler} placeholder="Product name" />
+                <div className="input-holder w-100">
+                    <label>Product Name</label>
+                    <input type="text" value={name} onChange={nameHandler} placeholder="Product name" />
+                </div>
 
                 <div className="multiple-input d-flex w-100">
-                    <input value={price} onChange={priceHandler} type="number" placeholder="Price" />
-                    <input value={quantity} onChange={quantityHandler} type="number" placeholder="Quantity" />
+                    <div className="input-holder">
+                        <label>Product Price</label>
+                        <input value={price} onChange={priceHandler} type="number" placeholder="Price" />
+                    </div>
+                    <div className="input-holder">
+                        <label>Product Quantity</label>
+                        <input value={quantity} onChange={quantityHandler} type="number" placeholder="Quantity" />
+                    </div>
                 </div>
 
                 <button type="submit">

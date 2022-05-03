@@ -12,7 +12,6 @@ export const createInfo = async (address, name, city, country, edit) => {
     const USER_ID = localStorage.getItem("gmrauthid")
 
     try {
-        console.log("mode "+ edit);
         if (edit) {
             await appwritesdk.database.updateDocument("626d506c8a3d66550de7", USER_ID, { ...infoObj })
         } else {

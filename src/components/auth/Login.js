@@ -1,5 +1,4 @@
 import { useState, useContext } from "react"
-import Swal from "sweetalert2"
 import { Context } from "../../Context/Context"
 import { login } from "../../util/authentication"
 
@@ -23,12 +22,7 @@ const Login = () => {
     const submitLogin = e => {
         e.preventDefault()
         if (!email || !password) {
-            return Swal.fire({
-                title: "Invalid credentials",
-                icon: 'error',
-                showConfirmButton: true,
-                timer: 3000,
-            })
+            return setAlertModal(() => ({ msg: "Invalid credentials", mode: true }))
         }
 
         setIsLoading(true)
@@ -49,11 +43,8 @@ const Login = () => {
     return (
         <section className="form">
             <form onSubmit={submitLogin} className="w-100 d-flex flex-column align-items-center">
-
-
                 <input type="email" value={email} onChange={emailHandler} placeholder="Email" />
                 <input type="password" value={password} onChange={passwordHandler} placeholder="Password" />
-
                 <button type="submit">
                     Login
                 </button>

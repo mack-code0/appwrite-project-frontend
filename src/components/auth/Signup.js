@@ -7,7 +7,8 @@ const Signup = ({ openLoginPageHandler }) => {
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
 
-    const { isLoggedIn_h, isLoading_h } = useContext(Context)
+    const { isLoggedIn_h, isLoading_h, alert_h } = useContext(Context)
+    const [alertModal, setAlertModal] = alert_h
     const [isLoading, setIsLoading] = isLoading_h
 
     const emailHandler = (e) => {
@@ -25,12 +26,7 @@ const Signup = ({ openLoginPageHandler }) => {
     const signup = e => {
         e.preventDefault()
         if (!email || !password || !name) {
-            return Swal.fire({
-                title: "Invalid inputs",
-                icon: 'error',
-                showConfirmButton: true,
-                timer: 3000,
-            })
+            return setAlertModal(() => ({ msg: "Invalid credentials", mode: true }))
         }
 
         setIsLoading(true)
@@ -45,20 +41,19 @@ const Signup = ({ openLoginPageHandler }) => {
         }).then(res => res.json())
             .then(response => {
                 if (response.error) {
+                    if (response.status === 429) {
+                        return setAlertModal(() => ({ msg: "Too many requests on this IP address, wait for some minutes" }))
+                    }
                     throw new Error("An error occured")
                 }
+                
                 setName("")
                 setEmail("")
                 setPassword("")
 
                 openLoginPageHandler()
             }).catch(err => {
-                Swal.fire({
-                    title: "An error Occured, Check your inputs",
-                    icon: 'error',
-                    showConfirmButton: true,
-                    timer: 3000,
-                })
+                setAlertModal(() => ({ msg: "An error occured, check your inputs.", mode: true }))
             }).finally(() => setIsLoading(false))
     }
 

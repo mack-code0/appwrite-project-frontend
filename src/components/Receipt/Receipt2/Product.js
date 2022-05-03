@@ -1,9 +1,9 @@
-const Product = () => {
+const Product = ({product}) => {
     return (
         <tr>
-            <td className="no">01</td>
-            <td className="text-left"><h3>Website Design</h3>Creating a recognizable design solution based on the company's existing visual identity</td>
-            <td className="total">$1,200.00</td>
+            <td className="no text-right">{product.quantity}</td>
+            <td className="text-left">{product.name}</td>
+            <td className="total">${product.price}</td>
         </tr >
     )
 }

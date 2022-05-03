@@ -5,7 +5,7 @@ import CreateImage from "../../util/CreateImage"
 import { genToken } from "../../util/authentication"
 import "./Button.css"
 
-const Receipt = ({ products, totalPrice, receiptNo }) => {
+const Receipt = ({ products, receiptNo, openTheme }) => {
     const saveReceiptHandler = async () => {
         try {
             const image = await CreateImage()
@@ -43,14 +43,21 @@ const Receipt = ({ products, totalPrice, receiptNo }) => {
             console.log(receiptNo)
             break;
     }
+
+    let totalPrice = 0
+    products.forEach(product => {
+        totalPrice += +product.price
+    });
+
     return (
         <div className="">
             <div className="mb-4">
-                <button className="save-and-share py-2 px-3 mr-3">Save and Share</button>
-                <button onClick={saveReceiptHandler} className="save py-2 px-3">Save</button>
+                <button className="save-and-share py-2 px-3">Save and Share</button>
+                <button onClick={saveReceiptHandler} className="save py-2 px-3 mx-3">Save</button>
+                <button onClick={openTheme} className="save py-2 px-3">Change Theme</button>
             </div>
             {/* <ReceiptTest products={products} totalPrice={totalPrice} /> */}
-            <ReceiptHolder />
+            <ReceiptHolder products={products} totalPrice={totalPrice} />
         </div>
     )
 }

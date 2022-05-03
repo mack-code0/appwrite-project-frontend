@@ -1,6 +1,6 @@
 import Product from "./Product"
 import "./Receipt.css"
-const Receipt = () => {
+const Receipt = ({ products, totalPrice }) => {
     return (
         <div id="printImage">
 
@@ -39,20 +39,20 @@ const Receipt = () => {
                         <table border="0" cellSpacing="0" cellPadding="0">
                             <thead>
                                 <tr>
-                                    <th>QTY</th>
+                                    <th style={{width: "30px"}}>QTY</th>
                                     <th className="text-left">DESCRIPTION</th>
                                     <th className="text-right">TOTAL</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                <Product />
+                                {products.map(product => <Product key={product.id} product={product} />)}
                             </tbody>
 
                             <tfoot>
                                 <tr>
                                     <td colSpan="2">GRAND TOTAL</td>
-                                    <td>$6,500.00</td>
+                                    <td>${totalPrice}</td>
                                 </tr>
                             </tfoot>
                         </table>

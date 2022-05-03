@@ -1,7 +1,8 @@
 import "./Receipt.css"
 import Product from "./Product"
 
-const Receipt = () => {
+const Receipt = ({ products, totalPrice }) => {
+
     return (
         <>
             <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -63,13 +64,11 @@ const Receipt = () => {
                                 <div className="row text-600 text-white bgc-default-tp1 py-25">
                                     <div className="col-8 col-sm-8">Description</div>
                                     <div className="col-2 col-sm-2">Qty</div>
-                                    <div className="col-2 col-sm-2">Qty</div>
+                                    <div className="col-2 col-sm-2">Price</div>
                                 </div>
 
                                 <div className="text-95 text-secondary-d3">
-
-                                    <Product />
-
+                                    {products.map(product => <Product key={product.id} product={product} />)}
                                 </div>
 
                                 <div className="row border-b-2 brc-default-l2"></div>
@@ -85,7 +84,7 @@ const Receipt = () => {
                                                 Total Amount
                                             </div>
                                             <div className="col-5">
-                                                <span className="text-150 text-success-d3 opacity-2">$2,475</span>
+                                                <span className="text-150 text-success-d3 opacity-2">${totalPrice}</span>
                                             </div>
                                         </div>
 

@@ -170,8 +170,8 @@ function App() {
             <Account openThemeOptions={themeSelector} /> :
             <>
               {viewReceipt.mode ?
-                <ReceiptHolder products={productList} receiptNo={viewReceipt.number} /> :
-                <FormHolder resetHandler={reset} addToList={addProduct} themeSelectorHandler={themeSelector} products={productList} editHandler={editProduct} deleteHandler={deleteProduct} />
+                <ReceiptHolder products={productList} receiptNo={viewReceipt.number} openTheme={themeSelector} /> :
+                <FormHolder resetHandler={reset} addToList={addProduct} openTheme={themeSelector} products={productList} editHandler={editProduct} deleteHandler={deleteProduct} />
               }
               {openThemeSelector && <CardPopup viewReceipt={viewReceiptHandler} handleClose={() => setOpenThemeSelector(false)} />}
             </>)

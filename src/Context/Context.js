@@ -5,7 +5,8 @@ export const Context = React.createContext()
 export const ContextProvider = ({ children }) => {
     const [alertModal, setAlertModal] = useState({
         mode: false,
-        msg: ""
+        msg: "",
+        icon: "error"
     });
     const [isLoading, setIsLoading] = useState(true)
     const [isloggedIn, setIsLoggedIn] = useState(false)

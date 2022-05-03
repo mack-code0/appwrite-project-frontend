@@ -45,7 +45,7 @@ function App() {
     if (alertModal.mode) {
       Swal.fire({
         title: alertModal.msg,
-        icon: 'error',
+        icon: alertModal.icon,
         showConfirmButton: true,
         timer: 3000,
       }).then(() => {
@@ -95,7 +95,6 @@ function App() {
   }
 
   const openAccountHandler = () => {
-    openLoaderHandler()
     setOpenAccount(!openAccount)
   }
 
@@ -125,7 +124,7 @@ function App() {
   const viewReceiptHandler = (num) => {
     if (productList.length <= 0) {
       return setAlertModal(() => {
-        return { mode: true, msg: "Please Add Product" }
+        return { mode: true, msg: "Please Add Product", icon: "warning" }
       })
     }
     openLoaderHandler()

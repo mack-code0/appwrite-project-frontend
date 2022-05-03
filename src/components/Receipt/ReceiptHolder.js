@@ -30,7 +30,7 @@ const Receipt = ({ products, receiptNo, openTheme }) => {
 
             if (response.error) {
                 if (response.status === 429) {
-                    return setAlertModal(() => ({ msg: "Too many requests! Wait for some minutes.", mode: true }))
+                    return setAlertModal(() => ({ msg: "Too many requests! Wait for some minutes.", mode: true, icon: "warning" }))
                 }
                 
                 throw new Error("An error occured")
@@ -38,7 +38,7 @@ const Receipt = ({ products, receiptNo, openTheme }) => {
 
             console.log(response)
         } catch (err) {
-            setAlertModal(() => ({ msg: "An error occured", mode: true }))
+            setAlertModal(() => ({ msg: "An error occured", mode: true, icon: "error" }))
         }
         setIsLoading(false)
     }

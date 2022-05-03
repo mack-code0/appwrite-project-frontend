@@ -24,7 +24,7 @@ const Form = ({ addToListHandler, themeSelector, reset }) => {
         e.preventDefault()
 
         if (!name || !price || !quantity) {
-            return setAlertModal(() => { return { mode: true, msg: "Invalid Inputs" } })
+            return setAlertModal(() => { return { mode: true, msg: "Invalid Inputs", icon: "warning" } })
         }
 
         addToListHandler({

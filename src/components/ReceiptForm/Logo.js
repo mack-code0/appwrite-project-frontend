@@ -28,7 +28,7 @@ const Logo = ({
                         <img onClick={openAccount} width="35" src={isAccountOpen ? Back : Settings} alt="" />
                     }
 
-                    {isLoggedIn && viewReceipt && <img onClick={homepage} width="35" src={Home} alt="" />}
+                    {isLoggedIn && (viewReceipt && !isAccountOpen && <img onClick={homepage} width="35" src={Home} alt="" />)}
 
                     {
                         !isLoggedIn ?

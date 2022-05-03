@@ -26,7 +26,7 @@ const Signup = ({ openLoginPageHandler }) => {
     const signup = e => {
         e.preventDefault()
         if (!email || !password || !name) {
-            return setAlertModal(() => ({ msg: "Invalid credentials", mode: true }))
+            return setAlertModal(() => ({ msg: "Invalid credentials", mode: true, icon: "error" }))
         }
 
         setIsLoading(true)
@@ -42,18 +42,18 @@ const Signup = ({ openLoginPageHandler }) => {
             .then(response => {
                 if (response.error) {
                     if (response.status === 429) {
-                        return setAlertModal(() => ({ msg: "Too many requests on this IP address, wait for some minutes" }))
+                        return setAlertModal(() => ({ msg: "Too many requests on this IP address, wait for some minutes", mode: true, icon: "warning" }))
                     }
                     throw new Error("An error occured")
                 }
-                
+
                 setName("")
                 setEmail("")
                 setPassword("")
 
                 openLoginPageHandler()
             }).catch(err => {
-                setAlertModal(() => ({ msg: "An error occured, check your inputs.", mode: true }))
+                setAlertModal(() => ({ msg: "An error occured, check your inputs.", mode: true, icon: "error" }))
             }).finally(() => setIsLoading(false))
     }
 

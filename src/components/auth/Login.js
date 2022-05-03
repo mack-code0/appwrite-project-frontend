@@ -22,7 +22,7 @@ const Login = () => {
     const submitLogin = e => {
         e.preventDefault()
         if (!email || !password) {
-            return setAlertModal(() => ({ msg: "Invalid credentials", mode: true }))
+            return setAlertModal(() => ({ msg: "Invalid credentials", mode: true, icon: "error" }))
         }
 
         setIsLoading(true)
@@ -30,9 +30,9 @@ const Login = () => {
         login(email, password).then(bool => {
             if (!bool.mode) {
                 if (bool.status === 429) {
-                    return setAlertModal(() => ({ msg: "Too many requests, Please wait for some minutes", mode: true }))
+                    return setAlertModal(() => ({ msg: "Too many requests, Please wait for some minutes", mode: true, icon: "warning" }))
                 }
-                setAlertModal(() => ({ msg: "Invalid credentials", mode: true }))
+                setAlertModal(() => ({ msg: "Invalid credentials", mode: true, icon: "error" }))
             }
             setIsLoggedIn(bool.mode)
         }).finally(() => {

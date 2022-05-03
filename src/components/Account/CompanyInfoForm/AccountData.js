@@ -1,23 +1,36 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
+import { Context } from "../../../Context/Context"
 import { createInfo, getInfo } from "../../../util/contollers"
 import "./Address.css"
 
 const Address = ({ authModeHandler }) => {
-    
+
     const [name, setName] = useState("")
     const [address, setAddress] = useState("")
     const [city, setCity] = useState("")
     const [country, setCountry] = useState("")
-    const [edit] = useState(name ? true : false)
-    
-    useEffect(()=>{
-        getInfo().then(({data})=>{
-            setName(data.name)
-            setAddress(data.address)
-            setCity(data.city)
-            setCountry(data.country)
+
+    const { alert_h, isLoading_h, isLoggedIn_h } = useContext(Context)
+    const [alertModal, setAlertModal] = alert_h
+    const [isLoading, setIsLoading] = isLoading_h
+
+    // Check if the info has been added
+    // If the info has been added, then when submitting the form the data would be submitted to the edit handler
+    const [editMode, setEditMode] = useState(false)
+
+    useEffect(() => {
+        setIsLoading(true)
+        getInfo().then((response) => {
+            if (response.error) { return setAlertModal(() => ({ msg: "Please update your info", mode: true, icon: "info" })) }
+            setEditMode(true)
+            setName(response.data.name)
+            setAddress(response.data.address)
+            setCity(response.data.city)
+            setCountry(response.data.country)
         })
-    }, [])
+        setIsLoading(false)
+    }, [setIsLoading, setAlertModal])
+
 
     const nameHandler = (e) => {
         setName(e.target.value)
@@ -36,12 +49,14 @@ const Address = ({ authModeHandler }) => {
     }
 
     const submit = (e) => {
+        setIsLoading(true)
         e.preventDefault()
-        createInfo(address, name, city, country, edit).then(response=>{
-            console.log(response);
-        }).catch(err=>{
-            console.log(err);
-        })
+        createInfo(address, name, city, country, editMode).then(response => {
+            if (response.error) throw new Error("An error occured")
+            setAlertModal(() => ({ mode: true, msg: "Info updated successfully", icon: "success" }))
+        }).catch(err => {
+            setAlertModal(() => ({ mode: true, msg: "An error occured, Pease try again", icon: "error" }))
+        }).finally(() => setIsLoading(false))
     }
 
     return (

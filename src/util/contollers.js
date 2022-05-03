@@ -1,7 +1,7 @@
 import appwritesdk from "./appwritesdk"
 
 
-export const createInfo = async (address, name, city, country, create) => {
+export const createInfo = async (address, name, city, country, edit) => {
     const infoObj = {
         address: address,
         name: name,
@@ -12,10 +12,11 @@ export const createInfo = async (address, name, city, country, create) => {
     const USER_ID = localStorage.getItem("gmrauthid")
 
     try {
-        if (create) {
-            await appwritesdk.database.createDocument("626d506c8a3d66550de7", USER_ID, {...infoObj})
+        console.log("mode "+ edit);
+        if (edit) {
+            await appwritesdk.database.updateDocument("626d506c8a3d66550de7", USER_ID, { ...infoObj })
         } else {
-            await appwritesdk.database.updateDocument("626d506c8a3d66550de7", USER_ID, {...infoObj})
+            await appwritesdk.database.createDocument("626d506c8a3d66550de7", USER_ID, { ...infoObj })
         }
         return { message: "successfull" }
     } catch (error) {
@@ -31,6 +32,6 @@ export const getInfo = async () => {
         const { name, address, city, country } = doc
         return { data: { name, address, city, country } }
     } catch (error) {
-        console.log(error);
+        return { error: "User has no Info yet" }
     }
 }

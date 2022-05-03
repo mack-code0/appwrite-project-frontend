@@ -40,9 +40,9 @@ export const login = (email, password) => {
     return promise.then(function (response) {
         localStorage.setItem("gmrauthsess", response.$id)
         localStorage.setItem("gmrauthid", response.userId)
-        return true
+        return {mode: true}
     }, function (error) {
-        return false
+        return { mode: false, status: error.code }
     });
 }
 

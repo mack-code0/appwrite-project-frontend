@@ -19,14 +19,13 @@ import EditForm from "./components/ReceiptForm/EditForm/EditForm"
 
 function App() {
   const [productList, setProductList] = useState("")
-  const [totalPrice, setTotalPrice] = useState(0)
   const [openThemeSelector, setOpenThemeSelector] = useState(false)
   const [openAccount, setOpenAccount] = useState(false)
+  const [openLoginPage, setOpenLoginPage] = useState(false)
   const [viewReceipt, setViewReceipt] = useState({
     mode: false,
     number: 0
   })
-  const [openLoginPage, setOpenLoginPage] = useState(false)
 
   const { alert_h, isLoading_h, isLoggedIn_h } = useContext(Context)
   const [alertModal, setAlertModal] = alert_h
@@ -56,10 +55,6 @@ function App() {
   }, [alertModal, setAlertModal])
 
   const addProduct = (product) => {
-    setTotalPrice((prev) => {
-      return prev + +product.price
-    })
-
     setProductList((prev) => {
       return [...prev, { ...product, id: Math.random() }]
     })

@@ -4,9 +4,16 @@ import Receipt2 from "./Receipt2/Receipt"
 import CreateImage from "../../util/CreateImage"
 import { genToken } from "../../util/authentication"
 import "./Button.css"
+import { Context } from "../../Context/Context"
+import { useContext } from "react"
 
 const Receipt = ({ products, receiptNo, openTheme }) => {
+    const { alert_h, isLoading_h, isLoggedIn_h } = useContext(Context)
+    const [alertModal, setAlertModal] = alert_h
+    const [isLoading, setIsLoading] = isLoading_h
+
     const saveReceiptHandler = async () => {
+        setIsLoading(true)
         try {
             const image = await CreateImage()
             await genToken()
@@ -19,11 +26,21 @@ const Receipt = ({ products, receiptNo, openTheme }) => {
                 },
                 body: JSON.stringify({ image: image })
             })
-            const res_1 = await res.json()
-            console.log(res_1)
+            const response = await res.json()
+
+            if (response.error) {
+                if (response.status === 429) {
+                    return setAlertModal(() => ({ msg: "Too many requests! Wait for some minutes.", mode: true }))
+                }
+                
+                throw new Error("An error occured")
+            }
+
+            console.log(response)
         } catch (err) {
-            console.log(err);
+            setAlertModal(() => ({ msg: "An error occured", mode: true }))
         }
+        setIsLoading(false)
     }
 
     let ReceiptHolder;

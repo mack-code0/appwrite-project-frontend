@@ -7,8 +7,9 @@ const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const { isLoggedIn_h, isLoading_h } = useContext(Context)
+    const { isLoggedIn_h, isLoading_h, alert_h } = useContext(Context)
     const [loggedIn, setIsLoggedIn] = isLoggedIn_h
+    const [alertModal, setAlertModal] = alert_h
     const [isLoading, setIsLoading] = isLoading_h
 
     const emailHandler = (e) => {
@@ -33,16 +34,13 @@ const Login = () => {
         setIsLoading(true)
 
         login(email, password).then(bool => {
-            if (!bool) {
-                return Swal.fire({
-                    title: "Invalid credentials",
-                    icon: 'error',
-                    showConfirmButton: true,
-                    timer: 3000,
-                })
+            if (!bool.mode) {
+                if (bool.status === 429) {
+                    return setAlertModal(() => ({ msg: "Too many requests, Please wait for some minutes", mode: true }))
+                }
+                setAlertModal(() => ({ msg: "Invalid credentials", mode: true }))
             }
-            // Setup for multiple login
-            setIsLoggedIn(bool)
+            setIsLoggedIn(bool.mode)
         }).finally(() => {
             setIsLoading(false)
         })

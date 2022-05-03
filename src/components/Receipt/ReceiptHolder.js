@@ -5,7 +5,10 @@ import CreateImage from "../../util/CreateImage"
 import { genToken } from "../../util/authentication"
 import "./Button.css"
 import { Context } from "../../Context/Context"
-import { useContext } from "react"
+import { useContext, useState } from "react"
+import ReactDOMServer from "react-dom/server"
+import Swal from "sweetalert2"
+import EditRecipient from "./EditRecipient/EditRecipient"
 
 const Receipt = ({ products, receiptNo, openTheme }) => {
     const { alert_h, isLoading_h, isLoggedIn_h } = useContext(Context)
@@ -30,51 +33,81 @@ const Receipt = ({ products, receiptNo, openTheme }) => {
 
             if (response.error) {
                 if (response.status === 429) {
-                    return setAlertModal(() => ({ msg: "Too many requests! Wait for some minutes.", mode: true, icon: "warning" }))
+                    return setAlertModal(() => ({
+                        msg: "Too many requests! Wait for some minutes.",
+                        mode: true,
+                        icon: "warning"
+                    }))
                 }
-                
+
                 throw new Error("An error occured")
             }
 
-            console.log(response)
         } catch (err) {
-            setAlertModal(() => ({ msg: "An error occured", mode: true, icon: "error" }))
+            setAlertModal(() => ({
+                msg: "An error occured",
+                mode: true,
+                icon: "error"
+            }))
         }
         setIsLoading(false)
     }
 
-    let ReceiptHolder;
-    switch (receiptNo) {
-        case 1:
-            ReceiptHolder = Receipt1
-            console.log("1");
-            break;
+    const [recipientInfo, setRecipientInfo] = useState({
+        name: "Recipient Name",
+        address: "Recipient Address",
+        city: "Recipient City",
+        country: "Recipient Country"
+    })
 
-        case 2:
-            ReceiptHolder = Receipt2
-            console.log("2");
-            break;
+    const editProduct = async (e) => {
+        Swal.fire({
+            title: 'Recipient Info',
+            html: ReactDOMServer.renderToString(<EditRecipient content={{ ...recipientInfo }} />),
+            focusConfirm: false,
+            preConfirm: () => {
+                const name = document.getElementById('edit-mode-name').value
+                const address = document.getElementById('edit-mode-address').value
+                const city = document.getElementById('edit-mode-city').value
+                const country = document.getElementById('edit-mode-country').value
 
-        default:
-            ReceiptHolder = Receipt2
-            console.log(receiptNo)
-            break;
+                setRecipientInfo((prev) => {
+                    return ({ name, address, city, country })
+                })
+            }
+        })
     }
+
 
     let totalPrice = 0
     products.forEach(product => {
         totalPrice += +product.price
     });
 
+    let ReceiptHolder;
+    switch (receiptNo) {
+        case 1:
+            ReceiptHolder = Receipt1
+            break;
+
+        case 2:
+            ReceiptHolder = Receipt2
+            break;
+
+        default:
+            ReceiptHolder = Receipt2
+            break;
+    }
+
     return (
         <div className="">
             <div className="mb-4">
-                <button className="save-and-share py-2 px-3">Save and Share</button>
+                <button onClick={editProduct} className="save-and-share py-2 px-3">Edit Recipient</button>
                 <button onClick={saveReceiptHandler} className="save py-2 px-3 mx-3">Save</button>
                 <button onClick={openTheme} className="save py-2 px-3">Change Theme</button>
             </div>
             {/* <ReceiptTest products={products} totalPrice={totalPrice} /> */}
-            <ReceiptHolder products={products} totalPrice={totalPrice} />
+            <ReceiptHolder products={products} totalPrice={totalPrice} recipient={recipientInfo} />
         </div>
     )
 }

@@ -2,10 +2,14 @@ import Settings from "./icons/setting.png"
 import Back from "./icons/back.png"
 import Home from "./icons/homepage.png"
 import LogoutIcon from "./icons/logout.png"
+import ReceiptList from "./icons/receipt.png"
 import { logout } from "../../util/authentication"
 import { useContext } from "react"
 import { Context } from "../../Context/Context"
 import Swal from "sweetalert2"
+
+import "./Navbar.css"
+import { getReceipts } from "../../util/contollers"
 
 const Navbar = ({
     openAccount,
@@ -51,11 +55,11 @@ const Navbar = ({
                     {
                         isLoggedIn &&
                         <>
-                            <img onClick={openAccount} width="35" src={isAccountOpen ? Back : Settings} alt="" />
-                            {viewReceipt && !isAccountOpen && <img onClick={homepage} width="35" src={Home} alt="Homepage" />}
+                            {viewReceipt && !isAccountOpen && <img onClick={homepage} width="35" src={Home} className="mr-2" alt="Homepage" />}
+                            <img onClick={openAccount} width="35" src={isAccountOpen ? Back : Settings} className="mr-2" alt="" />
+                            <img onClick={() => { getReceipts() }} width="35" src={ReceiptList} className="mr-2" alt="Receipt List" />
                         </>
                     }
-
 
                     {
                         !isLoggedIn ?

@@ -1,6 +1,6 @@
 import Product from "./Product"
 import "./Receipt.css"
-const Receipt = ({ products, totalPrice }) => {
+const Receipt = ({ products, totalPrice, recipient }) => {
     return (
         <div id="printImage">
 
@@ -28,8 +28,9 @@ const Receipt = ({ products, totalPrice }) => {
                         <div className="row contacts">
                             <div className="col invoice-to">
                                 <div className="text-gray-light">INVOICE TO:</div>
-                                <h2 className="to">John Doe</h2>
-                                <div className="address">796 Silver Harbour, TX 79273, US</div>
+                                <h2 className="to">{recipient.name},</h2>
+                                <div className="address">{recipient.address},</div>
+                                <div className="address">{recipient.city + ", " + recipient.country}.</div>
                             </div>
                             <div className="col invoice-details">
                                 <h1 className="invoice-id">INVOICE 3-2-1</h1>
@@ -39,7 +40,7 @@ const Receipt = ({ products, totalPrice }) => {
                         <table border="0" cellSpacing="0" cellPadding="0">
                             <thead>
                                 <tr>
-                                    <th style={{width: "30px"}}>QTY</th>
+                                    <th style={{ width: "30px" }}>QTY</th>
                                     <th className="text-left">DESCRIPTION</th>
                                     <th className="text-right">TOTAL</th>
                                 </tr>

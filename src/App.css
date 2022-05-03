@@ -7,3 +7,113 @@
     width: 100% !important;
   }
 }
+
+/* For forms */
+.form{
+  padding: 0 30px;
+}
+input{
+  width: 100%;
+  border: none;
+  background-color: #f1edf3;
+  padding: 18px 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  font-family: "Montserrat";
+}
+
+input:focus{
+  outline: 1px solid #60738f;
+}
+
+.multiple-input .input-holder:nth-of-type(1),
+.multiple-input input:nth-of-type(1),
+.multiple-button button:nth-of-type(1){
+  margin-right: 15px;
+}
+.multiple-input .input-holder:nth-of-type(2),
+.multiple-input input:nth-of-type(2),
+.multiple-button button:nth-of-type(2){
+  margin-left: 15px;
+}
+
+.input-holder label{
+  font-weight: 600;
+}
+
+
+button{
+  font-family: "Montserrat";
+  font-weight: 700;
+  border-radius: 10px;
+}
+
+.form button{
+  padding: 15px 0;
+  font-family: "Montserrat";
+  font-weight: 700;
+  letter-spacing: 1px;
+  background-color: #1030b7;
+  color: #fff;
+  border: none;
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  transition: 0.2s all;
+}
+.form button:hover{
+  opacity: 0.9;
+}
+/* 050506 */
+.multiple-button button:nth-of-type(1){
+  border: 1px solid #60738f;
+  background: none;
+  color: #60738f;
+}
+.multiple-button button:nth-of-type(2){
+  background-color: #60738f;
+}
+
+
+.added-product{
+  padding: 0 30px;
+}
+.product-info{
+  padding: 16px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  border: 1px solid #f1edf3;
+  font-family: "Montserrat";
+}
+.product-info h6{
+  font-weight: 700;
+  font-size: 20px;
+}
+.product-btn button{
+  padding: 12px 0px;
+  margin-top: 16px;
+  border: none;
+  width: 50%;
+  transition: 0.2s all;
+}
+.product-btn button:nth-of-type(1){
+  margin-right: 8px;
+  background-color: #f1edf3;
+  border: 1px solid #f1edf3;
+}
+.product-btn button:nth-of-type(2){
+  margin-left: 8px;
+  border: 1px solid #e40d0dbd;
+  background: none;
+  color: #e40d0dbd;
+}
+.product-btn button:nth-of-type(1):hover{
+  border: 1px solid #050506;
+  background-color: #050506;
+  color: #f1edf3;
+}
+.product-btn button:nth-of-type(2):hover{
+  background: #e40d0dbd;
+  color: #fff;
+}
+

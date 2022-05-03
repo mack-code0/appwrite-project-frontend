@@ -34,3 +34,16 @@ export const getInfo = async () => {
         return { error: "User has no Info yet" }
     }
 }
+
+export const getReceipts = async () => {
+    try {
+        const list = await appwritesdk.storage.listFiles("62542994aa8a5d9ac42d")
+        const fileIds = []
+        list.files.forEach(file => {
+            fileIds.push(file.$id)
+        })
+        console.log(fileIds)
+    } catch (err) {
+        console.log(err)
+    }
+}

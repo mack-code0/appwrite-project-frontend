@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react"
 import ReactDOMServer from "react-dom/server"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle.min"
-import "./components/ReceiptForm/FormHolder.css"
 import "./App.css"
 import Swal from 'sweetalert2'
 // /////////////////////////
@@ -34,7 +33,6 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true)
-    console.log("object");
     setTimeout(() => {
       setIsLoading(false)
     }, 1000)

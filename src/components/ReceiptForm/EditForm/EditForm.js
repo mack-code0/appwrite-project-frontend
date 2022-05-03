@@ -1,5 +1,3 @@
-import "../FormHolder.css"
-
 const EditForm = ({ content }) => {
     return (
         <section className="form">

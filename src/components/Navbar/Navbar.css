@@ -1,0 +1,15 @@
+.logo {
+  font-family: "Montserrat";
+  margin: 20px 30px;
+}
+.logo img {
+  cursor: pointer;
+  transition: 0.3s all;
+}
+.logo img:hover {
+  opacity: 0.8;
+}
+.logo h3 {
+  font-weight: 900;
+  color: #60738f;
+}

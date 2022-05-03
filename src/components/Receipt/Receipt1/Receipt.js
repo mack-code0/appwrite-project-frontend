@@ -1,7 +1,7 @@
 import "./Receipt.css"
 import Product from "./Product"
 
-const Receipt = ({ products, totalPrice }) => {
+const Receipt = ({ products, totalPrice, recipient }) => {
 
     return (
         <>
@@ -32,14 +32,17 @@ const Receipt = ({ products, totalPrice }) => {
                                 <div className="col-sm-6">
                                     <div>
                                         <span className="text-sm text-grey-m2 align-middle">To:</span>
-                                        <span className="text-600 text-110 text-blue align-middle">Alex Doe</span>
+                                        <span className="text-600 text-110 text-blue align-middle"> {recipient.name}</span>
                                     </div>
                                     <div className="text-grey-m2">
                                         <div className="my-1">
-                                            Street, City
+                                            {recipient.address}
                                         </div>
                                         <div className="my-1">
-                                            State, Country
+                                            {recipient.city},
+                                        </div>
+                                        <div className="my-1">
+                                            {recipient.country}.
                                         </div>
                                     </div>
                                 </div>

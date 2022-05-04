@@ -44,7 +44,7 @@ const Receipt = ({ products, receiptNo, openTheme, recipientInfo, setRecipientIn
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + token
                 },
-                body: JSON.stringify({ image: image })
+                body: JSON.stringify({ image: image, name: recipientInfo.name })
             })
             const response = await res.json()
 

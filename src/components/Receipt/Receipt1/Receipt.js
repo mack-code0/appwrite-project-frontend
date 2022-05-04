@@ -1,7 +1,7 @@
 import "./Receipt.css"
 import Product from "./Product"
 
-const Receipt = ({ products, totalPrice, recipient }) => {
+const Receipt = ({ products, totalPrice, recipient, companyInfo }) => {
 
     return (
         <>
@@ -23,7 +23,7 @@ const Receipt = ({ products, totalPrice, recipient }) => {
                         <div className="col-12 col-lg-12">
 
                             <div className="text-center">
-                                <h3 className="text-blue">Herbert Macaulay Company and Co from Nigeria</h3>
+                                <h3 className="text-blue">{companyInfo.name}</h3>
                             </div>
 
                             <hr className="row brc-default-l1 mx-n1 mb-4" />

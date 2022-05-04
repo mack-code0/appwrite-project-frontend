@@ -31,6 +31,14 @@ function App() {
   const [isLoading, setIsLoading] = isLoading_h
   const [isLoggedIn] = isLoggedIn_h
 
+  // state for reipient in receipt
+  const [recipientInfo, setRecipientInfo] = useState({
+    name: "Recipient Name",
+    address: "Recipient Address",
+    city: "Recipient City",
+    country: "Recipient Country"
+  })
+
   useEffect(() => {
     setIsLoading(true)
     setTimeout(() => {
@@ -168,7 +176,7 @@ function App() {
             <Account openThemeOptions={themeSelector} /> :
             <>
               {viewReceipt.mode ?
-                <ReceiptHolder products={productList} receiptNo={viewReceipt.number} openTheme={themeSelector} /> :
+                <ReceiptHolder products={productList} receiptNo={viewReceipt.number} recipientInfo={recipientInfo} setRecipientInfo={setRecipientInfo} openTheme={themeSelector} /> :
                 <FormHolder resetHandler={reset} addToList={addProduct} openTheme={themeSelector} products={productList} editHandler={editProduct} deleteHandler={deleteProduct} />
               }
               {openThemeSelector && <CardPopup viewReceipt={viewReceiptHandler} handleClose={() => setOpenThemeSelector(false)} />}

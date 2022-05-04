@@ -5,15 +5,32 @@ import CreateImage from "../../util/CreateImage"
 import { genToken } from "../../util/authentication"
 import "./Button.css"
 import { Context } from "../../Context/Context"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import ReactDOMServer from "react-dom/server"
 import Swal from "sweetalert2"
 import EditRecipient from "./EditRecipient/EditRecipient"
+import { getInfo } from "../../util/contollers"
 
-const Receipt = ({ products, receiptNo, openTheme }) => {
+const Receipt = ({ products, receiptNo, openTheme, recipientInfo, setRecipientInfo }) => {
     const { alert_h, isLoading_h, isLoggedIn_h } = useContext(Context)
     const [alertModal, setAlertModal] = alert_h
     const [isLoading, setIsLoading] = isLoading_h
+
+
+    const [companyInfo, setCompanyInfo] = useState({
+        name: "",
+        address: "",
+        city: "",
+        country: ""
+    })
+
+    useEffect(() => {
+        getInfo().then((response) => {
+            if (response.error) { return setAlertModal(() => ({ msg: "Please update your info", mode: true, icon: "info" })) }
+            const { name, address, city, country } = response.data
+            setCompanyInfo(() => ({ name, address, city, country }))
+        })
+    }, [setAlertModal])
 
     const saveReceiptHandler = async () => {
         setIsLoading(true)
@@ -52,13 +69,6 @@ const Receipt = ({ products, receiptNo, openTheme }) => {
         }
         setIsLoading(false)
     }
-
-    const [recipientInfo, setRecipientInfo] = useState({
-        name: "Recipient Name",
-        address: "Recipient Address",
-        city: "Recipient City",
-        country: "Recipient Country"
-    })
 
     const editProduct = async (e) => {
         Swal.fire({
@@ -107,7 +117,7 @@ const Receipt = ({ products, receiptNo, openTheme }) => {
                 <button onClick={openTheme} className="save py-2 px-3">Change Theme</button>
             </div>
             {/* <ReceiptTest products={products} totalPrice={totalPrice} /> */}
-            <ReceiptHolder products={products} totalPrice={totalPrice} recipient={recipientInfo} />
+            <ReceiptHolder products={products} totalPrice={totalPrice} recipient={recipientInfo} companyInfo={companyInfo} />
         </div>
     )
 }

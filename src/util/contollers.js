@@ -35,15 +35,32 @@ export const getInfo = async () => {
     }
 }
 
-export const getReceipts = async () => {
+export const getReceipts = async (search) => {
     try {
-        const list = await appwritesdk.storage.listFiles("62542994aa8a5d9ac42d")
+        const list = await appwritesdk.storage.listFiles("62542994aa8a5d9ac42d", search)
         const fileIds = []
         list.files.forEach(file => {
-            fileIds.push(file.$id)
+            fileIds.push({ id: file.$id, date: file.dateCreated })
         })
-        console.log(fileIds)
+        return fileIds
     } catch (err) {
-        console.log(err)
+        throw new Error("An error occured")
+    }
+}
+
+export const viewReceipt = async (id) => {
+    try {
+        const receipt = appwritesdk.storage.getFileView("62542994aa8a5d9ac42d", id)
+        return receipt.href
+    } catch (err) {
+        throw new Error("An error occured!")
+    }
+}
+
+export const deleteReceipt = async (id) => {
+    try {
+        await appwritesdk.storage.deleteFile("62542994aa8a5d9ac42d", id)
+    } catch (err) {
+        throw new Error("An error occured!")
     }
 }

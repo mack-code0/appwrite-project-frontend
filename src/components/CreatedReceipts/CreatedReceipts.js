@@ -75,7 +75,7 @@ const CreatedReceipts = () => {
                     <thead>
                       <tr>
                         <th>Date</th>
-                        <th>Invoice ID</th>
+                        <th>Receipient</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -84,7 +84,7 @@ const CreatedReceipts = () => {
                         return (
                           <tr key={receipt.id}>
                             <th scope="row">{new Date(receipt.date * 1000).toLocaleDateString()}</th>
-                            <td>{receipt.id}</td>
+                            <td>{receipt.name}</td>
                             <td className="d-flex">
                               <button onClick={() => viewHandler(receipt.id)} className="btn btn-success mr-2">View</button>
                               <button className="btn btn-primary mr-2">Share</button>

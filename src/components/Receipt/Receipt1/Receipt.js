@@ -1,7 +1,7 @@
 import "./Receipt.css"
 import Product from "./Product"
 
-const Receipt = ({ products, totalPrice, recipient, companyInfo }) => {
+const Receipt = ({ products, totalPrice, recipient, receiptId, companyInfo }) => {
 
     return (
         <>
@@ -13,7 +13,7 @@ const Receipt = ({ products, totalPrice, recipient, companyInfo }) => {
                         Invoice
                         <small className="page-info">
                             <i className="fa fa-angle-double-right text-80"></i>
-                            ID: #111-222
+                            ID: #{receiptId}
                         </small>
                     </h1>
                 </div>
@@ -39,10 +39,10 @@ const Receipt = ({ products, totalPrice, recipient, companyInfo }) => {
                                             {recipient.address}
                                         </div>
                                         <div className="my-1">
-                                            {recipient.city},
+                                            {recipient.city}
                                         </div>
                                         <div className="my-1">
-                                            {recipient.country}.
+                                            {recipient.country}
                                         </div>
                                     </div>
                                 </div>

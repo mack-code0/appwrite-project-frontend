@@ -37,8 +37,8 @@ function App() {
   const [recipientInfo, setRecipientInfo] = useState({
     name: "Recipient Name",
     address: "Recipient Address",
-    city: "Recipient City",
-    country: "Recipient Country"
+    city: "",
+    country: ""
   })
 
   useEffect(() => {

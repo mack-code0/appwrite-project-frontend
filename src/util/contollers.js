@@ -38,9 +38,10 @@ export const getInfo = async () => {
 export const getReceipts = async (search) => {
     try {
         const list = await appwritesdk.storage.listFiles("62542994aa8a5d9ac42d", search)
+        console.log(list)
         const fileIds = []
         list.files.forEach(file => {
-            fileIds.push({ id: file.$id, date: file.dateCreated })
+            fileIds.push({ id: file.$id, date: file.dateCreated, name: file.name.split("-")[0] })
         })
         return fileIds
     } catch (err) {

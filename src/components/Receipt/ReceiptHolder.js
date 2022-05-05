@@ -10,6 +10,7 @@ import ReactDOMServer from "react-dom/server"
 import Swal from "sweetalert2"
 import EditRecipient from "./EditRecipient/EditRecipient"
 import { getInfo } from "../../util/contollers"
+import uniqId from "uniqid"
 
 const Receipt = ({ products, receiptNo, openTheme, recipientInfo, setRecipientInfo }) => {
     const { alert_h, isLoading_h, isLoggedIn_h } = useContext(Context)
@@ -23,6 +24,7 @@ const Receipt = ({ products, receiptNo, openTheme, recipientInfo, setRecipientIn
         city: "",
         country: ""
     })
+    const [receiptId, setReceiptId] = useState(uniqId())
 
     useEffect(() => {
         getInfo().then((response) => {
@@ -33,6 +35,15 @@ const Receipt = ({ products, receiptNo, openTheme, recipientInfo, setRecipientIn
     }, [setAlertModal])
 
     const saveReceiptHandler = async () => {
+        const { name, address } = recipientInfo
+        if (name === "Recipient Name" || address === "Recipient Address") {
+            return setAlertModal(() => ({
+                msg: "Please check your Recipent's name and address",
+                mode: true,
+                icon: "warning"
+            }))
+        }
+
         setIsLoading(true)
         try {
             const image = await CreateImage()
@@ -44,11 +55,19 @@ const Receipt = ({ products, receiptNo, openTheme, recipientInfo, setRecipientIn
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + token
                 },
-                body: JSON.stringify({ image: image, name: recipientInfo.name })
+                body: JSON.stringify({ image: image, userName: name, receiptId: receiptId })
             })
             const response = await res.json()
 
             if (response.error) {
+                if (response.status === 401) {
+                    localStorage.setItem("gmrauthtoken", "")
+                    await genToken()
+                    console.log(401)
+                    return await saveReceiptHandler()
+                }
+
+
                 if (response.status === 429) {
                     return setAlertModal(() => ({
                         msg: "Too many requests! Wait for some minutes.",
@@ -60,14 +79,20 @@ const Receipt = ({ products, receiptNo, openTheme, recipientInfo, setRecipientIn
                 throw new Error("An error occured")
             }
 
+            setAlertModal(() => ({
+                msg: "Receipt Saved!",
+                mode: true,
+                icon: "success"
+            }))
         } catch (err) {
             setAlertModal(() => ({
                 msg: "An error occured",
                 mode: true,
                 icon: "error"
             }))
+        } finally {
+            setIsLoading(false)
         }
-        setIsLoading(false)
     }
 
     const editProduct = async (e) => {
@@ -117,7 +142,7 @@ const Receipt = ({ products, receiptNo, openTheme, recipientInfo, setRecipientIn
                 <button onClick={openTheme} className="save py-2 px-3">Change Theme</button>
             </div>
             {/* <ReceiptTest products={products} totalPrice={totalPrice} /> */}
-            <ReceiptHolder products={products} totalPrice={totalPrice} recipient={recipientInfo} companyInfo={companyInfo} />
+            <ReceiptHolder products={products} totalPrice={totalPrice} recipient={recipientInfo} receiptId={"Receipt-" + receiptId} companyInfo={companyInfo} />
         </div>
     )
 }

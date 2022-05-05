@@ -1,6 +1,6 @@
 import Product from "./Product"
 import "./Receipt.css"
-const Receipt = ({ products, totalPrice, recipient, companyInfo }) => {
+const Receipt = ({ products, totalPrice, recipient, receiptId, companyInfo }) => {
     return (
         <div id="printImage">
 
@@ -25,12 +25,12 @@ const Receipt = ({ products, totalPrice, recipient, companyInfo }) => {
                         <div className="row contacts">
                             <div className="col invoice-to">
                                 <div className="text-gray-light">INVOICE TO:</div>
-                                <h2 className="to">{recipient.name},</h2>
-                                <div className="address">{recipient.address},</div>
-                                <div className="address">{recipient.city + ", " + recipient.country}.</div>
+                                <h2 className="to">{recipient.name}</h2>
+                                <div className="address">{recipient.address}</div>
+                                <div className="address">{recipient.city + " " + recipient.country}</div>
                             </div>
                             <div className="col invoice-details">
-                                <h1 className="invoice-id">INVOICE 3-2-1</h1>
+                                <h1 className="invoice-id">{receiptId}</h1>
                                 <div className="date">Date of Invoice: {new Date(Date.now()).toLocaleDateString()}</div>
                             </div>
                         </div>

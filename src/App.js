@@ -14,12 +14,14 @@ import Logo from "./components/Navbar/Navbar"
 import Loader from "./components/Loader/Loader"
 import Signup from "./components/auth/Signup"
 import Login from "./components/auth/Login"
+import CreatedReceipts from "./components/CreatedReceipts/CreatedReceipts"
 import EditForm from "./components/ReceiptForm/EditForm/EditForm"
 
 function App() {
   const [productList, setProductList] = useState("")
   const [openThemeSelector, setOpenThemeSelector] = useState(false)
   const [openAccount, setOpenAccount] = useState(false)
+  const [openCreatedReceipts, setOpenCreatedReceipts] = useState(false)
   const [openLoginPage, setOpenLoginPage] = useState(false)
   const [viewReceipt, setViewReceipt] = useState({
     mode: false,
@@ -93,15 +95,6 @@ function App() {
     })
   }
 
-  const themeSelector = () => {
-    openLoaderHandler()
-    setOpenThemeSelector(!openThemeSelector)
-  }
-
-  const openAccountHandler = () => {
-    setOpenAccount(!openAccount)
-  }
-
   const reset = () => {
     if (productList.length > 0) {
       Swal.fire({
@@ -125,6 +118,16 @@ function App() {
     }
   }
 
+
+  const themeSelector = () => {
+    openLoaderHandler()
+    setOpenThemeSelector(!openThemeSelector)
+  }
+
+  const openAccountHandler = () => {
+    setOpenAccount(!openAccount)
+  }
+
   const viewReceiptHandler = (num) => {
     if (productList.length <= 0) {
       return setAlertModal(() => {
@@ -133,12 +136,24 @@ function App() {
     }
     openLoaderHandler()
     setOpenThemeSelector(false)
+    setOpenCreatedReceipts(false)
     setViewReceipt(() => ({ number: num, mode: true }))
   }
 
   const homepageHandler = () => {
     openLoaderHandler()
+    setOpenCreatedReceipts(false)
     setViewReceipt(() => ({ mode: false, number: 0 }))
+  }
+
+  const openCreatedReceiptsHandler = () => {
+    if (!openCreatedReceipts) {
+      setViewReceipt(() => ({ mode: "", number: 0 }))
+      setOpenAccount(false)
+    } else {
+      setViewReceipt(() => ({ mode: false, number: 0 }))
+    }
+    setOpenCreatedReceipts(!openCreatedReceipts)
   }
 
   const openLoaderHandler = () => {
@@ -163,6 +178,7 @@ function App() {
         openLoginPage={openLoginPage}
         openSignupPageHandler={() => setOpenLoginPage(false)}
         openLoginPageHandler={() => setOpenLoginPage(true)}
+        openCreatedReceipts={openCreatedReceiptsHandler}
         openAccount={openAccountHandler}
         homepage={homepageHandler}
         viewReceipt={viewReceipt}
@@ -175,9 +191,14 @@ function App() {
           (openAccount ?
             <Account openThemeOptions={themeSelector} /> :
             <>
-              {viewReceipt.mode ?
-                <ReceiptHolder products={productList} receiptNo={viewReceipt.number} recipientInfo={recipientInfo} setRecipientInfo={setRecipientInfo} openTheme={themeSelector} /> :
-                <FormHolder resetHandler={reset} addToList={addProduct} openTheme={themeSelector} products={productList} editHandler={editProduct} deleteHandler={deleteProduct} />
+              {/* {openAccount && <Account openThemeOptions={themeSelector} />} */}
+              {openCreatedReceipts && <CreatedReceipts />}
+              {typeof viewReceipt.mode !== "string" &&
+                (
+                  viewReceipt.mode ?
+                    <ReceiptHolder products={productList} receiptNo={viewReceipt.number} recipientInfo={recipientInfo} setRecipientInfo={setRecipientInfo} openTheme={themeSelector} /> :
+                    <FormHolder resetHandler={reset} addToList={addProduct} openTheme={themeSelector} products={productList} editHandler={editProduct} deleteHandler={deleteProduct} />
+                )
               }
               {openThemeSelector && <CardPopup viewReceipt={viewReceiptHandler} handleClose={() => setOpenThemeSelector(false)} />}
             </>)

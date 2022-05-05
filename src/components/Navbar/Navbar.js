@@ -19,7 +19,8 @@ const Navbar = ({
     openLoginPage,
     openSignupPageHandler,
     openLoginPageHandler,
-    resetStates
+    resetStates,
+    openCreatedReceipts
 }) => {
     const { isLoggedIn_h, alert_h } = useContext(Context)
     const [isLoggedIn, setIsLoggedIn] = isLoggedIn_h
@@ -57,7 +58,7 @@ const Navbar = ({
                         <>
                             {viewReceipt && !isAccountOpen && <img onClick={homepage} width="35" src={Home} className="mr-2" alt="Homepage" />}
                             <img onClick={openAccount} width="35" src={isAccountOpen ? Back : Settings} className="mr-2" alt="" />
-                            <img onClick={() => { getReceipts() }} width="35" src={ReceiptList} className="mr-2" alt="Receipt List" />
+                            <img onClick={openCreatedReceipts} width="35" src={ReceiptList} className="mr-2" alt="Receipt List" />
                         </>
                     }
 

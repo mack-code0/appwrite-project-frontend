@@ -29,7 +29,6 @@ const Card = ({ viewReceipt, receiptNo }) => {
                     <h5 className="card-title">Special title treatment</h5>
                     <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
                     <button className="btn-sm" onClick={viewReceipt}>Select</button>
-                    <button className="btn-sm">View</button>
                 </div>
             </div>
         </div>

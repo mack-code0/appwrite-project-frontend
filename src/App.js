@@ -196,8 +196,21 @@ function App() {
               {typeof viewReceipt.mode !== "string" &&
                 (
                   viewReceipt.mode ?
-                    <ReceiptHolder products={productList} receiptNo={viewReceipt.number} recipientInfo={recipientInfo} setRecipientInfo={setRecipientInfo} openTheme={themeSelector} /> :
-                    <FormHolder resetHandler={reset} addToList={addProduct} openTheme={themeSelector} products={productList} editHandler={editProduct} deleteHandler={deleteProduct} />
+                    <ReceiptHolder
+                      products={productList}
+                      receiptNo={viewReceipt.number}
+                      recipientInfo={recipientInfo}
+                      setRecipientInfo={setRecipientInfo}
+                      openTheme={themeSelector}
+                    /> :
+                    <FormHolder
+                      resetHandler={reset}
+                      addToList={addProduct}
+                      openTheme={themeSelector}
+                      products={productList}
+                      editHandler={editProduct}
+                      deleteHandler={deleteProduct}
+                    />
                 )
               }
               {openThemeSelector && <CardPopup viewReceipt={viewReceiptHandler} handleClose={() => setOpenThemeSelector(false)} />}

@@ -24,8 +24,6 @@ const Receipt = ({ products, receiptNo, openTheme, recipientInfo, setRecipientIn
         city: "",
         country: ""
     })
-    const [receiptId, setReceiptId] = useState(uniqId())
-
     useEffect(() => {
         getInfo().then((response) => {
             if (response.error) { return setAlertModal(() => ({ msg: "Please update your info", mode: true, icon: "info" })) }
@@ -34,7 +32,14 @@ const Receipt = ({ products, receiptNo, openTheme, recipientInfo, setRecipientIn
         })
     }, [setAlertModal])
 
+    const [receiptId, setReceiptId] = useState("")
+    useEffect(() => {
+        setReceiptId(uniqId())
+    }, [])
+
+
     const saveReceiptHandler = async () => {
+        // Check if user has added recipient info
         const { name, address } = recipientInfo
         if (name === "Recipient Name" || address === "Recipient Address") {
             return setAlertModal(() => ({
@@ -63,19 +68,8 @@ const Receipt = ({ products, receiptNo, openTheme, recipientInfo, setRecipientIn
                 if (response.status === 401) {
                     localStorage.setItem("gmrauthtoken", "")
                     await genToken()
-                    console.log(401)
                     return await saveReceiptHandler()
                 }
-
-
-                if (response.status === 429) {
-                    return setAlertModal(() => ({
-                        msg: "Too many requests! Wait for some minutes.",
-                        mode: true,
-                        icon: "warning"
-                    }))
-                }
-
                 throw new Error("An error occured")
             }
 
@@ -84,7 +78,17 @@ const Receipt = ({ products, receiptNo, openTheme, recipientInfo, setRecipientIn
                 mode: true,
                 icon: "success"
             }))
+
+            setReceiptId(uniqId())
         } catch (err) {
+            if (err.code === 429) {
+                return setAlertModal(() => ({
+                    msg: "Too many requests! Wait for some minutes.",
+                    mode: true,
+                    icon: "warning"
+                }))
+            }
+
             setAlertModal(() => ({
                 msg: "An error occured",
                 mode: true,

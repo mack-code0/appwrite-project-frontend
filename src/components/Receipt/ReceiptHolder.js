@@ -9,14 +9,14 @@ import { useContext, useEffect, useState } from "react"
 import ReactDOMServer from "react-dom/server"
 import Swal from "sweetalert2"
 import EditRecipient from "./EditRecipient/EditRecipient"
-import { getInfo } from "../../util/contollers"
+import { getInfo, createBarCode } from "../../util/contollers"
 import uniqId from "uniqid"
+// import "dotenv/config"
 
 const Receipt = ({ products, receiptNo, openTheme, recipientInfo, setRecipientInfo }) => {
     const { alert_h, isLoading_h, isLoggedIn_h } = useContext(Context)
     const [alertModal, setAlertModal] = alert_h
     const [isLoading, setIsLoading] = isLoading_h
-
 
     const [companyInfo, setCompanyInfo] = useState({
         name: "",
@@ -36,8 +36,7 @@ const Receipt = ({ products, receiptNo, openTheme, recipientInfo, setRecipientIn
     useEffect(() => {
         setReceiptId(uniqId())
     }, [])
-
-
+    
     const saveReceiptHandler = async () => {
         // Check if user has added recipient info
         const { name, address } = recipientInfo
@@ -146,7 +145,7 @@ const Receipt = ({ products, receiptNo, openTheme, recipientInfo, setRecipientIn
                 <button onClick={openTheme} className="save py-2 px-3">Change Theme</button>
             </div>
             {/* <ReceiptTest products={products} totalPrice={totalPrice} /> */}
-            <ReceiptHolder products={products} totalPrice={totalPrice} recipient={recipientInfo} receiptId={"Receipt-" + receiptId} companyInfo={companyInfo} />
+            <ReceiptHolder date={new Date(Date.now()).toLocaleDateString()} products={products} totalPrice={totalPrice} recipient={recipientInfo} receiptId={"Receipt-" + receiptId} companyInfo={companyInfo} />
         </div>
     )
 }

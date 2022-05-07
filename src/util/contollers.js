@@ -13,9 +13,9 @@ export const createInfo = async (address, name, city, country, edit) => {
 
     try {
         if (edit) {
-            await appwritesdk.database.updateDocument("626d506c8a3d66550de7", USER_ID, { ...infoObj })
+            await appwritesdk.database.updateDocument(process.env.REACT_APP_COLLECTION_ID, USER_ID, { ...infoObj })
         } else {
-            await appwritesdk.database.createDocument("626d506c8a3d66550de7", USER_ID, { ...infoObj })
+            await appwritesdk.database.createDocument(process.env.REACT_APP_COLLECTION_ID, USER_ID, { ...infoObj })
         }
         return { message: "successfull" }
     } catch (error) {
@@ -27,7 +27,7 @@ export const createInfo = async (address, name, city, country, edit) => {
 export const getInfo = async () => {
     const USER_ID = localStorage.getItem("gmrauthid")
     try {
-        const doc = await appwritesdk.database.getDocument("626d506c8a3d66550de7", USER_ID)
+        const doc = await appwritesdk.database.getDocument(process.env.REACT_APP_COLLECTION_ID, USER_ID)
         const { name, address, city, country } = doc
         return { data: { name, address, city, country } }
     } catch (error) {
@@ -35,15 +35,15 @@ export const getInfo = async () => {
     }
 }
 
-export const getReceipts = async (search) => {
+export const getReceipts = async (search, page) => {
     try {
-        const list = await appwritesdk.storage.listFiles("62542994aa8a5d9ac42d", search)
-        console.log(list)
+        const limit = 5
+        const list = await appwritesdk.storage.listFiles(process.env.REACT_APP_BUCKET_ID, search, limit, limit * page - limit, "", "", "DESC")
         const fileIds = []
         list.files.forEach(file => {
             fileIds.push({ id: file.$id, date: file.dateCreated, name: file.name.split("-")[0] })
         })
-        return fileIds
+        return { files: fileIds.reverse(), total: Math.ceil(list.total / limit) }
     } catch (err) {
         throw new Error("An error occured")
     }
@@ -51,7 +51,7 @@ export const getReceipts = async (search) => {
 
 export const viewReceipt = async (id) => {
     try {
-        const receipt = appwritesdk.storage.getFileView("62542994aa8a5d9ac42d", id)
+        const receipt = appwritesdk.storage.getFileView(process.env.REACT_APP_BUCKET_ID, id)
         return receipt.href
     } catch (err) {
         throw new Error("An error occured!")
@@ -60,7 +60,7 @@ export const viewReceipt = async (id) => {
 
 export const deleteReceipt = async (id) => {
     try {
-        await appwritesdk.storage.deleteFile("62542994aa8a5d9ac42d", id)
+        await appwritesdk.storage.deleteFile(process.env.REACT_APP_BUCKET_ID, id)
     } catch (err) {
         throw new Error("An error occured!")
     }

@@ -1,6 +1,6 @@
 import Product from "./Product"
 import "./Receipt.css"
-const Receipt = ({ products, totalPrice, recipient, receiptId, companyInfo }) => {
+const Receipt = ({ products, totalPrice, recipient, receiptId, companyInfo, date }) => {
     return (
         <div id="printImage">
 
@@ -31,7 +31,7 @@ const Receipt = ({ products, totalPrice, recipient, receiptId, companyInfo }) =>
                             </div>
                             <div className="col invoice-details">
                                 <h1 className="invoice-id">{receiptId}</h1>
-                                <div className="date">Date of Invoice: {new Date(Date.now()).toLocaleDateString()}</div>
+                                <div className="date">Date of Invoice: {date}</div>
                             </div>
                         </div>
                         <table border="0" cellSpacing="0" cellPadding="0">

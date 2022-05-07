@@ -117,3 +117,6 @@ button{
   color: #fff;
 }
 
+li.page-item{
+  cursor: pointer;
+}

@@ -7,19 +7,22 @@ import Loader from "../Loader/Loader"
 const CreatedReceipts = () => {
   const [receipts, setReceipts] = useState([])
   const [innerLoading, setInnerLoading] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState()
 
   const { alert_h, isLoading_h } = useContext(Context)
   const [alertModal, setAlertModal] = alert_h
   const [isLoading, setIsLoading] = isLoading_h
 
   useEffect(() => {
-    setIsLoading(true)
-    getReceipts("").then(response => {
-      setReceipts(response.reverse())
+    setInnerLoading(true)
+    getReceipts("", currentPage).then(response => {
+      setReceipts(response.files.reverse())
+      setTotalPages(response.total)
     }).catch((err) => {
       setAlertModal(() => ({ mode: true, msg: "An error occured", icon: "error" }))
-    }).finally(() => setIsLoading(false))
-  }, [setIsLoading, setAlertModal])
+    }).finally(() => setInnerLoading(false))
+  }, [setIsLoading, setAlertModal, currentPage])
 
   const deleteHandler = (id) => {
     setIsLoading(true)
@@ -46,13 +49,46 @@ const CreatedReceipts = () => {
 
   }
 
+  const paginationHandler = (e) => {
+    let clicked;
+    if (e.target.innerHTML === "&gt;") {
+      clicked = currentPage + 1
+    } else if (e.target.innerHTML === "&lt;") {
+      clicked = currentPage - 1
+    } else {
+      clicked = + e.target.innerHTML
+    }
+    setCurrentPage(clicked)
+  }
+
   const searchHandler = (e) => {
     setInnerLoading(true)
-    getReceipts(e.target.value).then(response => {
-      setReceipts(response.reverse())
+    getReceipts(e.target.value, 1).then(response => {
+      setReceipts(response.files.reverse())
+      setTotalPages(response.total)
     }).catch((err) => {
       setAlertModal(() => ({ mode: true, msg: "An error occured", icon: "error" }))
     }).finally(() => setInnerLoading(false))
+  }
+
+  const pages = []
+  for (var i = 1; i <= totalPages; i++) {
+    if (i === currentPage) {
+      pages.push(
+        <li key={i} className="page-item active">
+          <span className="page-link">{i} <span className="sr-only">(current)</span></span>
+        </li>
+      )
+      continue
+    }
+    pages.push(<li key={i} className="page-item"><span onClick={paginationHandler} className="page-link">{i}</span></li>)
+  }
+
+
+  const sendEmail = () => {
+    Swal.fire({
+      html: ``
+    })
   }
 
   return (
@@ -68,6 +104,28 @@ const CreatedReceipts = () => {
         <h1 style={{ opacity: 0.5 }} className="text-center"> No Receipts </h1> :
         <section style={{ overflow: "scroll" }} className="ftco-section w-100">
           <div className="container">
+
+            <nav aria-label="...">
+              <ul className="pagination">
+                {
+                  currentPage > 1 &&
+                  <li className="page-item">
+                    <span className="page-link" onClick={(e) => paginationHandler(e)}>&lt;</span>
+                  </li>
+                }
+                {
+                  pages.map(page => page)
+                }
+                {
+                  !((currentPage + 1) > totalPages) &&
+                  <li className="page-item">
+                    <span className="page-link" onClick={(e) => paginationHandler(e)}>&gt;</span>
+                  </li>
+                }
+
+              </ul>
+            </nav>
+
             <div className="row">
               <div className="col-md-12">
                 <div className="table-wrap">
@@ -87,7 +145,7 @@ const CreatedReceipts = () => {
                             <td>{receipt.name}</td>
                             <td className="d-flex">
                               <button onClick={() => viewHandler(receipt.id)} className="btn btn-success mr-2">View</button>
-                              <button className="btn btn-primary mr-2">Share</button>
+                              <button onClick={() => sendEmail()} className="btn btn-primary mr-2">Share</button>
                               <button onClick={() => deleteHandler(receipt.id)} className="btn btn-danger">Delete</button>
                             </td>
                           </tr>)
@@ -97,6 +155,7 @@ const CreatedReceipts = () => {
                 </div>
               </div>
             </div>
+
           </div>
         </section>
       }

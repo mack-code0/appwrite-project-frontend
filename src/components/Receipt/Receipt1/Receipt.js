@@ -1,7 +1,7 @@
 import "./Receipt.css"
 import Product from "./Product"
 
-const Receipt = ({ products, totalPrice, recipient, receiptId, companyInfo }) => {
+const Receipt = ({ products, totalPrice, recipient, receiptId, companyInfo, date }) => {
 
     return (
         <>
@@ -50,13 +50,13 @@ const Receipt = ({ products, totalPrice, recipient, receiptId, companyInfo }) =>
                                 <div className="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end">
                                     <hr className="d-sm-none" />
                                     <div className="text-grey-m2">
-                                        <div className="mt-1 mb-2 text-secondary-m1 text-600 text-125">
+                                        {/* <div className="mt-1 mb-2 text-secondary-m1 text-600 text-125">
                                             Invoice
-                                        </div>
+                                        </div> */}
 
-                                        <div className="my-2"><i className="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span className="text-600 text-90">ID:</span> #111-222</div>
+                                        {/* <div className="my-2"><i className="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span className="text-600 text-90">ID:</span> #111-222</div> */}
 
-                                        <div className="my-2"><i className="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span className="text-600 text-90">Issue Date:</span> Oct 12, 2019</div>
+                                        <div className="my-2"><i className="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span className="text-600 text-90">Issue Date:</span> {date}</div>
 
                                     </div>
                                 </div>

@@ -1,5 +1,24 @@
 import appwritesdk from "./appwritesdk"
 
+import { send, init } from "emailjs-com";
+
+const serviceId = process.env.REACT_APP_EMAIL_SERVICE_ID;
+const templateId = process.env.REACT_APP_EMAIL_TEMPLATE_ID;
+const userID = process.env.REACT_APP_EMAIL_USER_ID;
+
+export const sendEmail = async (content) => {
+    init(userID);
+    const toSend = {
+        to_email: content.email
+    };
+    try {
+        const res = await send(serviceId, templateId, toSend);
+        console.log(res);
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 
 export const createInfo = async (address, name, city, country, edit) => {
     const infoObj = {

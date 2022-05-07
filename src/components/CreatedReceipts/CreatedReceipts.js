@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react"
 import { Context } from "../../Context/Context"
-import { getReceipts, deleteReceipt, viewReceipt } from "../../util/contollers"
+import { getReceipts, deleteReceipt, viewReceipt, sendEmail } from "../../util/contollers"
 import Swal from "sweetalert2"
 import Loader from "../Loader/Loader"
 
@@ -85,10 +85,19 @@ const CreatedReceipts = () => {
   }
 
 
-  const sendEmail = () => {
-    Swal.fire({
-      html: ``
+  const sendEmailHandler = async () => {
+    const { value: email } = await Swal.fire({
+      title: 'Send Receipt',
+      input: 'email',
+      inputPlaceholder: `Enter Recipient's email address`
     })
+    setIsLoading(true)
+    if (email) {
+      const content = { email: email, receiptId: "", downloadUrl: "", imageUrl: "" }
+      const response = await sendEmail(content)
+      console.log(response)
+    }
+    setIsLoading(false)
   }
 
   return (
@@ -145,7 +154,7 @@ const CreatedReceipts = () => {
                             <td>{receipt.name}</td>
                             <td className="d-flex">
                               <button onClick={() => viewHandler(receipt.id)} className="btn btn-success mr-2">View</button>
-                              <button onClick={() => sendEmail()} className="btn btn-primary mr-2">Share</button>
+                              <button onClick={() => sendEmailHandler()} className="btn btn-primary mr-2">Share</button>
                               <button onClick={() => deleteHandler(receipt.id)} className="btn btn-danger">Delete</button>
                             </td>
                           </tr>)
